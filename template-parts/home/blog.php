@@ -37,13 +37,8 @@ if ( ! $posts_q->have_posts() ) {
                 <?php get_template_part( 'template-parts/card', 'post' ); ?>
             <?php endwhile; wp_reset_postdata(); ?>
         </div>
-
         <div class="vs-blog-cta">
-            <?php
-            $blog_page = get_option( 'page_for_posts' );
-            $blog_url  = $blog_page ? get_permalink( $blog_page ) : home_url( '/blog/' );
-            ?>
-            <a href="<?php echo esc_url( $blog_url ); ?>" class="vs-btn vs-btn-outline">
+            <a href="<?php echo esc_url( vs_get_blog_url() ); ?>" class="vs-btn vs-btn-outline">
                 <?php esc_html_e( 'View all articles', 'visahouse' ); ?>
                 <i class="fa-solid fa-arrow-right"></i>
             </a>

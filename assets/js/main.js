@@ -159,7 +159,84 @@
         var target = document.querySelector(href);
         if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
     });
+    /* ============================================================
+       REVIEWS SLIDER — pause / play toggle
+       ============================================================ */
+    (function () {
+        var toggle = document.getElementById('vsReviewsToggle');
+        var track = document.getElementById('vsReviewsTrack');
+        if (!toggle || !track) return;
 
+        var autoplay = track.closest('[data-autoplay]');
+        var autoplayOn = autoplay ? autoplay.getAttribute('data-autoplay') === '1' : true;
+
+        // If autoplay was turned off from admin, apply the paused state on load
+        if (!autoplayOn) {
+            track.style.animationPlayState = 'paused';
+            toggle.classList.add('is-paused');
+            toggle.setAttribute('aria-pressed', 'true');
+            toggle.setAttribute('aria-label', 'Play auto-scroll');
+        }
+
+        toggle.addEventListener('click', function () {
+            var paused = track.style.animationPlayState === 'paused';
+            if (paused) {
+                // Play
+                track.style.animationPlayState = '';
+                toggle.classList.remove('is-paused');
+                toggle.setAttribute('aria-pressed', 'false');
+                toggle.setAttribute('aria-label', 'Pause auto-scroll');
+            } else {
+                // Pause
+                track.style.animationPlayState = 'paused';
+                toggle.classList.add('is-paused');
+                toggle.setAttribute('aria-pressed', 'true');
+                toggle.setAttribute('aria-label', 'Play auto-scroll');
+            }
+        });
+
+        // Optional: pause on hover (keep this on by default)
+        var wrap = track.closest('.vs-reviews-track-wrap');
+        if (wrap) {
+            wrap.addEventListener('mouseenter', function () {
+                if (!toggle.classList.contains('is-paused')) {
+                    track.style.animationPlayState = 'paused';
+                }
+            });
+            wrap.addEventListener('mouseleave', function () {
+                if (!toggle.classList.contains('is-paused')) {
+                    track.style.animationPlayState = '';
+                }
+            });
+        }
+    })();
+
+    /* ============================================================
+   BACK TO TOP
+   ============================================================ */
+    (function () {
+        var btn = document.getElementById('vsBackToTop');
+        if (!btn) return;
+
+        var ticking = false;
+        function onScroll() {
+            var y = window.pageYOffset || document.documentElement.scrollTop;
+            btn.classList.toggle('is-visible', y > 400);
+            ticking = false;
+        }
+        window.addEventListener('scroll', function () {
+            if (!ticking) {
+                window.requestAnimationFrame(onScroll);
+                ticking = true;
+            }
+        }, { passive: true });
+
+        btn.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        onScroll();
+    })();
     document.addEventListener('DOMContentLoaded', function () { vsReveal(); });
 
     /* ============================================================

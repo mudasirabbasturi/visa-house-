@@ -75,6 +75,8 @@ require_once VS_DIR . '/inc/modal-helpers.php';
 require_once VS_DIR . '/inc/services-modal.php';
 require_once VS_DIR . '/inc/menu-icons.php';
 require_once VS_DIR . '/inc/service-category-meta.php';
+require_once VS_DIR . '/inc/footer-customizer.php';
+
 
 /**
  * Body classes.

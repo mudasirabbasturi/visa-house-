@@ -1,0 +1,1166 @@
+/* ==========================================================================
+   HERO V2 — Full-width slider + floating dynamic calculator
+   File:   assets/css/hero-v2.css
+   Author: Mudasir Abbas
+   Scope:  All classes prefixed with .hv2- to avoid collisions with main.css.
+   Enqueue AFTER main.css.
+   ========================================================================== */
+
+/* ==========================================================================
+   TOKENS
+   ========================================================================== */
+:root {
+    --font: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-bold: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+    --primary: #0A1F3D;
+    --primary-light: #1E3A5F;
+
+    --accent: #C2410C;
+    --accent-hover: #9A3309;
+    --accent-soft: #FEF3E7;
+    --accent-soft-2: #FFF8F0;
+    --accent-grad: linear-gradient(135deg, #C2410C 0%, #EA580C 100%);
+
+    --ink: #0A1F3D;
+    --ink-2: #475569;
+    --ink-3: #64748B;
+    --ink-4: #94A3B8;
+
+    --paper: #FFFFFF;
+    --surface: #F8FAFC;
+    --surface-2: #F1F5F9;
+    --line: #E2E8F0;
+    --line-soft: #F1F5F9;
+
+    --success: #10B981;
+    --whatsapp: #25D366;
+
+    --r: 12px;
+    --r-lg: 18px;
+    --r-xl: 24px;
+    --r-2xl: 32px;
+    --r-pill: 999px;
+
+    --maxw: 1280px;
+
+    --sh-sm: 0 1px 3px rgba(10, 31, 61, .06), 0 1px 2px rgba(10, 31, 61, .04);
+    --sh: 0 4px 16px -4px rgba(10, 31, 61, .1), 0 2px 8px rgba(10, 31, 61, .05);
+    --sh-lg: 0 20px 40px -12px rgba(10, 31, 61, .15), 0 8px 20px -8px rgba(10, 31, 61, .08);
+    --sh-xl: 0 40px 80px -20px rgba(10, 31, 61, .28), 0 16px 32px -12px rgba(10, 31, 61, .12);
+
+    --ease: cubic-bezier(.22, 1, .36, 1);
+    --spring: cubic-bezier(.34, 1.56, .64, 1);
+}
+
+
+/* ==========================================================================
+   HERO — FULL WIDTH SLIDER + FLOATING CALCULATOR
+   ========================================================================== */
+.hv2-hero {
+    position: relative;
+    width: 100%;
+    min-height: 720px;
+    overflow: hidden;
+    background: var(--primary);
+}
+
+/* ---------- SLIDER (full width) ---------- */
+.hv2-slider {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.hv2-track {
+    display: flex;
+    height: 100%;
+    transition: transform .9s var(--ease);
+}
+
+.hv2-slide {
+    position: relative;
+    min-width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.hv2-slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg,
+            rgba(10, 31, 61, .92) 0%,
+            rgba(10, 31, 61, .78) 35%,
+            rgba(10, 31, 61, .45) 60%,
+            rgba(10, 31, 61, .15) 100%),
+        linear-gradient(180deg,
+            rgba(10, 31, 61, .30) 0%,
+            rgba(10, 31, 61, .10) 40%,
+            rgba(10, 31, 61, .55) 100%);
+    z-index: 1;
+}
+
+.hv2-slide::after {
+    content: "";
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(194, 65, 12, .18) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Slide content — positioned left, respecting container */
+.hv2-slide-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 120px 32px 140px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Constrain slider content to ~55% so it doesn't collide with calc card */
+.hv2-slide-content {
+    max-width: 620px;
+    animation: hv2In 1s var(--ease);
+}
+
+@keyframes hv2In {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Tag pill */
+.hv2-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, .1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, .2);
+    color: #fff;
+    padding: 6px 18px 6px 6px;
+    border-radius: var(--r-pill);
+    font-family: var(--font-bold);
+    font-size: .72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: 24px;
+}
+
+/* Tag icon inside pill */
+.hv2-tag-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(255, 183, 135, .18);
+    color: #FFB787;
+    font-size: .75rem;
+    flex-shrink: 0;
+}
+
+/* Big decorative icon on the right of the slide */
+.hv2-slide-big-icon {
+    position: absolute;
+    top: 50%;
+    right: 6%;
+    transform: translateY(-50%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.hv2-slide-big-icon-inner {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, .12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 183, 135, .55);
+    font-size: 5rem;
+    box-shadow:
+        0 30px 80px -20px rgba(0, 0, 0, .4),
+        inset 0 1px 0 rgba(255, 255, 255, .08);
+    animation: hv2BigIconFloat 8s ease-in-out infinite;
+}
+
+@keyframes hv2BigIconFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-16px) rotate(3deg);
+    }
+}
+
+/* Heading */
+.hv2-slide-content h1 {
+    color: #fff;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    line-height: 1.05;
+    letter-spacing: -.04em;
+    margin-bottom: 22px;
+    text-shadow: 0 2px 20px rgba(10, 31, 61, .25);
+}
+
+.hv2-slide-content h1 em {
+    font-style: normal;
+    position: relative;
+    color: #FFB787;
+    white-space: nowrap;
+}
+
+.hv2-slide-content h1 em::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: .04em;
+    height: .18em;
+    background: linear-gradient(90deg, rgba(255, 183, 135, .35), rgba(255, 183, 135, .1));
+    border-radius: 99px;
+    z-index: -1;
+}
+
+.hv2-slide-content p {
+    color: rgba(255, 255, 255, .82);
+    font-size: clamp(1rem, 2.2vw, 1.15rem);
+    line-height: 1.65;
+    max-width: 52ch;
+    margin-bottom: 32px;
+}
+
+/* CTA row */
+.hv2-slide-ctas {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.hv2-slide-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    color: var(--primary);
+    padding: 16px 28px;
+    border-radius: var(--r-pill);
+    font-family: var(--font-bold);
+    font-size: .92rem;
+    font-weight: 800;
+    text-decoration: none;
+    transition: .25s var(--ease);
+    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, .35);
+}
+
+.hv2-slide-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px -8px rgba(0, 0, 0, .45);
+    color: var(--accent);
+}
+
+.hv2-slide-btn i {
+    font-size: .8rem;
+    transition: transform .25s var(--ease);
+}
+
+.hv2-slide-btn:hover i {
+    transform: translateX(4px);
+}
+
+.hv2-slide-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 24px;
+    border-radius: var(--r-pill);
+    background: rgba(255, 255, 255, .08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(255, 255, 255, .25);
+    color: #fff;
+    font-family: var(--font-bold);
+    font-size: .92rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: .25s var(--ease);
+}
+
+.hv2-slide-btn-ghost:hover {
+    background: rgba(255, 255, 255, .15);
+    border-color: rgba(255, 255, 255, .5);
+}
+
+/* WhatsApp variant of the ghost button */
+.hv2-slide-btn-wa {
+    background: rgba(37, 211, 102, .15);
+    border-color: rgba(37, 211, 102, .4);
+    color: #fff;
+}
+
+.hv2-slide-btn-wa:hover {
+    background: #25D366;
+    border-color: #25D366;
+    color: #fff;
+}
+
+.hv2-slide-btn-wa i {
+    color: #25D366;
+    transition: color .25s var(--ease);
+}
+
+.hv2-slide-btn-wa:hover i {
+    color: #fff;
+}
+
+/* Trust pills below CTA */
+.hv2-trust-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255, 255, 255, .12);
+}
+
+.hv2-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: var(--r-pill);
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .12);
+    color: rgba(255, 255, 255, .85);
+    font-size: .78rem;
+    font-weight: 600;
+}
+
+.hv2-pill i {
+    color: #FFB787;
+    font-size: .75rem;
+}
+
+/* ---------- SLIDER CONTROLS ---------- */
+.hv2-controls {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: var(--maxw);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* group dots + arrows on the left */
+    gap: 24px;
+    z-index: 5;
+    pointer-events: none;
+
+    /* Reserve space for the floating calculator card on the right */
+    padding-right: 500px;
+    box-sizing: border-box;
+}
+
+.hv2-dots {
+    display: flex;
+    gap: 10px;
+    pointer-events: auto;
+}
+
+.hv2-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, .4);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: .35s var(--ease);
+}
+
+.hv2-dot:hover {
+    border-color: rgba(255, 255, 255, .8);
+}
+
+.hv2-dot.is-active {
+    background: #fff;
+    border-color: #fff;
+    width: 36px;
+    border-radius: 8px;
+}
+
+.hv2-arrows {
+    display: flex;
+    gap: 10px;
+    pointer-events: auto;
+}
+
+.hv2-arrow {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, .22);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .25s var(--ease);
+}
+
+.hv2-arrow:hover {
+    background: #fff;
+    color: var(--accent);
+    transform: scale(1.06);
+    border-color: #fff;
+}
+
+.hv2-arrow:active {
+    transform: scale(.96);
+}
+
+/* Progress bar */
+.hv2-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: var(--accent-grad);
+    z-index: 6;
+    transition: width .1s linear;
+    box-shadow: 0 0 12px rgba(194, 65, 12, .6);
+}
+
+
+/* ==========================================================================
+   FLOATING CALCULATOR CARD
+   ========================================================================== */
+.hv2-calc-wrap {
+    position: absolute;
+    top: 50%;
+    right: 32px;
+    transform: translateY(-50%);
+    width: 440px;
+    max-width: calc(100vw - 64px);
+    z-index: 10;
+    pointer-events: auto;
+}
+
+.hv2-calc {
+    position: relative;
+    background: #fff;
+    border-radius: var(--r-2xl);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 620px;
+    box-shadow:
+        0 60px 120px -30px rgba(10, 31, 61, .5),
+        0 24px 48px -16px rgba(10, 31, 61, .3),
+        0 0 0 1px rgba(255, 255, 255, .08);
+}
+
+.hv2-calc::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--accent-grad);
+    z-index: 3;
+}
+
+/* Head */
+.hv2-calc-head {
+    flex: none;
+    padding: 22px 24px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #fff;
+}
+
+.hv2-calc-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: var(--accent-grad);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 1.15rem;
+    flex-shrink: 0;
+    box-shadow: 0 8px 20px -6px rgba(194, 65, 12, .5);
+}
+
+.hv2-calc-title-wrap {
+    flex: 1;
+    min-width: 0;
+}
+
+.hv2-calc-title {
+    font-family: var(--font-bold);
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -.02em;
+    line-height: 1.2;
+}
+
+.hv2-calc-sub {
+    font-size: .76rem;
+    color: var(--ink-3);
+    font-weight: 500;
+    margin-top: 3px;
+}
+
+/* Live badge */
+.hv2-calc-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: var(--r-pill);
+    font-family: var(--font-bold);
+    font-size: .6rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.hv2-calc-live::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: hv2LivePulse 1.6s ease-in-out infinite;
+}
+
+@keyframes hv2LivePulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .35;
+    }
+}
+
+/* Crumbs */
+.hv2-crumbs {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line-soft);
+    font-size: .72rem;
+    color: var(--ink-4);
+    overflow-x: auto;
+    scrollbar-width: none;
+    min-height: 42px;
+}
+
+.hv2-crumbs::-webkit-scrollbar {
+    display: none;
+}
+
+.hv2-crumb {
+    white-space: nowrap;
+    font-weight: 600;
+    transition: color .2s;
+}
+
+.hv2-crumb.is-current {
+    color: var(--accent);
+    font-weight: 800;
+}
+
+.hv2-crumbs i {
+    font-size: .5rem;
+    color: var(--ink-4);
+}
+
+/* Body */
+.hv2-calc-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 18px 22px 20px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+    background: #fff;
+}
+
+.hv2-calc-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.hv2-calc-body::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 0;
+}
+
+/* Group */
+.hv2-group {
+    margin-bottom: 18px;
+}
+
+.hv2-group:last-child {
+    margin-bottom: 0;
+}
+
+.hv2-group-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 0 4px 10px;
+}
+
+.hv2-group-head h4 {
+    font-family: var(--font-bold);
+    font-size: .64rem;
+    font-weight: 800;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0;
+}
+
+.hv2-group-head span {
+    font-size: .6rem;
+    font-weight: 800;
+    color: var(--ink-4);
+    letter-spacing: .12em;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Rows */
+.hv2-row-list {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    background: #fff;
+}
+
+.hv2-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 15px;
+    cursor: pointer;
+    transition: .22s var(--ease);
+    border-top: 1px solid var(--line-soft);
+    position: relative;
+    background: #fff;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+.hv2-row:first-child {
+    border-top: none;
+}
+
+.hv2-row::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transition: transform .25s var(--ease);
+}
+
+.hv2-row:hover {
+    background: var(--accent-soft-2);
+}
+
+.hv2-row:hover::before {
+    transform: scaleY(1);
+}
+
+.hv2-row.is-selected {
+    background: var(--accent-soft);
+}
+
+.hv2-row.is-selected::before {
+    transform: scaleY(1);
+}
+
+.hv2-row-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--accent);
+    display: grid;
+    place-items: center;
+    font-size: .95rem;
+    flex-shrink: 0;
+    transition: .3s var(--spring);
+}
+
+.hv2-row:hover .hv2-row-icon {
+    background: #fff;
+    transform: scale(1.05);
+}
+
+.hv2-row.is-selected .hv2-row-icon {
+    background: var(--accent-grad);
+    color: #fff;
+    box-shadow: 0 8px 18px -6px rgba(194, 65, 12, .5);
+    transform: scale(1.02);
+}
+
+.hv2-row-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.hv2-row-name {
+    font-size: .9rem;
+    font-weight: 700;
+    color: var(--primary);
+    display: block;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hv2-row-desc {
+    font-size: .74rem;
+    color: var(--ink-3);
+    display: block;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hv2-row.is-selected .hv2-row-desc {
+    color: var(--accent);
+}
+
+/* Radio */
+.hv2-radio {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #cbd5e1;
+    flex-shrink: 0;
+    position: relative;
+    transition: .25s var(--ease);
+    pointer-events: none;
+}
+
+.hv2-radio::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: scale(0);
+    transition: transform .28s var(--spring);
+}
+
+.hv2-row.is-selected .hv2-radio {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+}
+
+.hv2-row.is-selected .hv2-radio::after {
+    transform: scale(1);
+}
+
+/* Sub-row price */
+.hv2-row-price {
+    font-family: var(--font-bold);
+    font-size: .8rem;
+    font-weight: 800;
+    color: var(--ink-3);
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.hv2-row.is-selected .hv2-row-price {
+    color: var(--accent);
+}
+
+/* Footer */
+.hv2-calc-foot {
+    flex: none;
+    border-top: 1px solid var(--line-soft);
+    padding: 16px 22px 18px;
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.hv2-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2px;
+}
+
+.hv2-summary-label {
+    font-size: .68rem;
+    font-weight: 700;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.hv2-summary-total {
+    font-family: var(--font-bold);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.02em;
+}
+
+.hv2-summary-total small {
+    font-size: .65rem;
+    font-weight: 600;
+    color: var(--ink-4);
+    margin-left: 3px;
+    letter-spacing: .02em;
+}
+
+.hv2-calc-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.hv2-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--font-bold);
+    font-size: .86rem;
+    font-weight: 800;
+    padding: 13px 18px;
+    border-radius: var(--r-pill);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: .22s var(--ease);
+    white-space: nowrap;
+}
+
+.hv2-btn-ghost {
+    flex: 0 0 auto;
+    background: #fff;
+    border: 1.5px solid var(--line);
+    color: var(--ink-2);
+    padding: 13px 15px;
+}
+
+.hv2-btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft-2);
+}
+
+.hv2-btn-primary {
+    flex: 1;
+    background: var(--accent-grad);
+    color: #fff;
+    box-shadow: 0 8px 22px -8px rgba(194, 65, 12, .55);
+}
+
+.hv2-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px -8px rgba(194, 65, 12, .65);
+}
+
+.hv2-btn-primary:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+/* Big icon shrinks on smaller desktops */
+@media (max-width: 1400px) {
+    .hv2-slide-big-icon {
+        right: 3%;
+    }
+
+    .hv2-slide-big-icon-inner {
+        width: 180px;
+        height: 180px;
+        font-size: 4rem;
+    }
+}
+
+/* Tablet — slider full, calc below */
+@media (max-width: 1100px) {
+    .hv2-hero {
+        min-height: auto;
+        padding-bottom: 0;
+    }
+
+    .hv2-slider {
+        position: relative;
+        height: 640px;
+    }
+
+    .hv2-slide-inner {
+        padding: 100px 32px 120px;
+    }
+
+    .hv2-slide-content {
+        max-width: 100%;
+    }
+
+    /* Hide big floating icon on tablet */
+    .hv2-slide-big-icon {
+        display: none;
+    }
+
+    .hv2-calc-wrap {
+        position: relative;
+        top: auto;
+        right: auto;
+        transform: none;
+        width: 100%;
+        max-width: var(--maxw);
+        margin: -60px auto 0;
+        padding: 0 32px;
+    }
+
+    .hv2-calc {
+        max-height: none;
+    }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+    .hv2-slider {
+        height: 560px;
+    }
+
+    .hv2-slide-inner {
+        padding: 80px 20px 110px;
+    }
+
+    .hv2-slide-content h1 {
+        font-size: clamp(1.9rem, 7vw, 2.4rem);
+        margin-bottom: 16px;
+    }
+
+    .hv2-slide-content p {
+        font-size: .95rem;
+        margin-bottom: 24px;
+    }
+
+    .hv2-tag {
+        font-size: .65rem;
+        padding: 5px 14px 5px 5px;
+        margin-bottom: 18px;
+    }
+
+    .hv2-tag-icon {
+        width: 22px;
+        height: 22px;
+        font-size: .68rem;
+    }
+
+    .hv2-slide-btn,
+    .hv2-slide-btn-ghost {
+        padding: 13px 20px;
+        font-size: .85rem;
+    }
+
+    .hv2-slide-ctas {
+        gap: 8px;
+    }
+
+    .hv2-trust-pills {
+        margin-top: 22px;
+        padding-top: 20px;
+        gap: 8px;
+    }
+
+    .hv2-pill {
+        padding: 6px 11px;
+        font-size: .72rem;
+    }
+
+    .hv2-controls {
+        bottom: 24px;
+        padding: 0 20px;
+        gap: 16px;
+    }
+
+    .hv2-dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .hv2-dot.is-active {
+        width: 26px;
+    }
+
+    .hv2-arrow {
+        width: 42px;
+        height: 42px;
+        font-size: .9rem;
+    }
+
+    .hv2-calc-wrap {
+        margin-top: -40px;
+        padding: 0 16px;
+    }
+
+    .hv2-calc {
+        border-radius: var(--r-xl);
+    }
+
+    .hv2-calc-head {
+        padding: 18px 20px 14px;
+    }
+
+    .hv2-calc-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1rem;
+    }
+
+    .hv2-calc-title {
+        font-size: .98rem;
+    }
+
+    .hv2-calc-body {
+        padding: 14px 18px 16px;
+    }
+
+    .hv2-crumbs {
+        padding: 8px 20px;
+        font-size: .68rem;
+    }
+
+    .hv2-calc-foot {
+        padding: 14px 18px 16px;
+    }
+
+    .hv2-row {
+        padding: 12px 13px;
+        gap: 11px;
+    }
+
+    .hv2-row-icon {
+        width: 36px;
+        height: 36px;
+        font-size: .85rem;
+        border-radius: 10px;
+    }
+
+    .hv2-row-name {
+        font-size: .85rem;
+    }
+
+    .hv2-row-desc {
+        font-size: .7rem;
+    }
+
+    .hv2-summary-total {
+        font-size: 1.05rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .hv2-slide-btn-ghost {
+        display: none;
+    }
+
+    .hv2-slide-content h1 {
+        font-size: 1.75rem;
+    }
+
+    .hv2-trust-pills {
+        display: none;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .hv2-track,
+    .hv2-slide-content,
+    .hv2-calc-live::before,
+    .hv2-slide-big-icon-inner {
+        animation: none !important;
+        transition: none !important;
+    }
+}

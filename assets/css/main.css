@@ -1888,10 +1888,13 @@ ol {
   margin-top: 6px;
 }
 
-
 /* ==========================================================================
    16. REVIEWS MARQUEE
    ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   16a. Section + track
+   -------------------------------------------------------------------------- */
 .vs-reviews-section {
   overflow: hidden;
   position: relative;
@@ -1911,10 +1914,8 @@ ol {
   gap: 20px;
   width: max-content;
   animation: vsReviewsScroll 45s linear infinite;
-}
-
-.vs-reviews-track-wrap:hover .vs-reviews-track {
-  animation-play-state: paused;
+  animation-play-state: running;
+  will-change: transform;
 }
 
 @keyframes vsReviewsScroll {
@@ -1927,11 +1928,206 @@ ol {
   }
 }
 
+
+/* --------------------------------------------------------------------------
+   16b. Reviews toolbar (stars · pause · Google badge)
+   -------------------------------------------------------------------------- */
+.vs-reviews-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 28px;
+  padding: 10px 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  max-width: 620px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: var(--sh-sm);
+  flex-wrap: wrap;
+}
+
+/* Left — rating */
+.vs-reviews-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  flex-shrink: 0;
+}
+
+.vs-reviews-rating .vs-google-stars {
+  font-size: .9rem;
+  letter-spacing: 1.5px;
+}
+
+.vs-reviews-rating .vs-google-rating {
+  font-family: var(--font-bold) !important;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+
+.vs-reviews-rating .vs-google-count {
+  font-size: .78rem;
+  color: var(--ink-3);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Two-layer stars (partial fill) */
+.vs-google-stars {
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+  color: #E5E7EB;
+}
+
+.vs-google-stars-base {
+  display: block;
+  color: #E5E7EB;
+}
+
+.vs-google-stars-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #F59E0B;
+  pointer-events: none;
+}
+
+/* Center — pause/play */
+.vs-reviews-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  height: 34px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-family: var(--font-family);
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s var(--ease);
+  white-space: nowrap;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.vs-reviews-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft-2);
+}
+
+.vs-reviews-toggle:active {
+  transform: scale(.97);
+}
+
+.vs-reviews-toggle i {
+  font-size: .7rem;
+  flex-shrink: 0;
+}
+
+.vs-reviews-toggle.is-paused {
+  background: var(--accent-grad);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* Icon/label swap */
+.vs-reviews-toggle .vs-toggle-icon-play,
+.vs-reviews-toggle .vs-toggle-text-play {
+  display: none;
+}
+
+.vs-reviews-toggle.is-paused .vs-toggle-icon-pause,
+.vs-reviews-toggle.is-paused .vs-toggle-text-pause {
+  display: none;
+}
+
+.vs-reviews-toggle.is-paused .vs-toggle-icon-play,
+.vs-reviews-toggle.is-paused .vs-toggle-text-play {
+  display: inline-block;
+}
+
+/* Right — Google badge */
+.vs-google-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  text-decoration: none;
+  color: var(--ink-2);
+  font-size: .82rem;
+  font-weight: 600;
+  transition: .2s var(--ease);
+  white-space: nowrap;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.vs-google-badge:hover {
+  background: #fff;
+  border-color: #4285F4;
+  box-shadow: 0 6px 18px -6px rgba(66, 133, 244, .25);
+  transform: translateY(-1px);
+  color: var(--ink);
+}
+
+.vs-google-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.vs-google-logo svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.vs-google-text {
+  font-size: .82rem;
+  color: var(--ink-2);
+  font-weight: 600;
+}
+
+.vs-google-arrow {
+  font-size: .65rem;
+  color: var(--ink-4);
+  transition: transform .2s var(--ease), color .2s var(--ease);
+  flex-shrink: 0;
+}
+
+.vs-google-badge:hover .vs-google-arrow {
+  color: #4285F4;
+  transform: translate(2px, -2px);
+}
+
+
+/* --------------------------------------------------------------------------
+   16c. Review card
+   -------------------------------------------------------------------------- */
 .vs-review-card {
   background: #fff;
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
-  padding: 28px;
+  padding: 24px 26px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -1945,12 +2141,50 @@ ol {
   box-shadow: var(--sh);
 }
 
-.vs-review-stars {
-  color: #F59E0B;
-  font-size: .95rem;
-  letter-spacing: 2px;
+/* Head row — stars left, Google right */
+.vs-review-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line-soft);
 }
 
+.vs-review-card-head .vs-review-stars {
+  font-size: .95rem;
+  letter-spacing: 2px;
+  color: #F59E0B;
+  line-height: 1;
+}
+
+/* Google icon on the right */
+.vs-review-google {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+  transition: .2s var(--ease);
+}
+
+.vs-review-google svg {
+  display: block;
+  width: 15px;
+  height: 15px;
+}
+
+.vs-review-card:hover .vs-review-google {
+  background: #fff;
+  border-color: #4285F4;
+  box-shadow: 0 4px 12px -4px rgba(66, 133, 244, .3);
+}
+
+/* Review text */
 .vs-review-text {
   font-size: .95rem;
   color: var(--ink-2);
@@ -1958,10 +2192,13 @@ ol {
   line-height: 1.65;
 }
 
+/* Author */
 .vs-review-author {
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-top: auto;
+  padding-top: 4px;
 }
 
 .vs-review-avatar {
@@ -1991,6 +2228,64 @@ ol {
   color: var(--ink-3);
 }
 
+
+/* --------------------------------------------------------------------------
+   16d. Reviews responsive
+   -------------------------------------------------------------------------- */
+
+/* Mobile — stack toolbar */
+@media (max-width: 640px) {
+  .vs-reviews-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px;
+    border-radius: var(--r-lg);
+  }
+
+  .vs-reviews-rating {
+    justify-content: center;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .vs-reviews-toggle,
+  .vs-google-badge {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+/* Small mobile — tighten */
+@media (max-width: 420px) {
+  .vs-reviews-rating {
+    gap: 6px;
+  }
+
+  .vs-reviews-rating .vs-google-stars {
+    font-size: .82rem;
+    letter-spacing: 1px;
+  }
+
+  .vs-reviews-rating .vs-google-rating {
+    font-size: .92rem;
+  }
+
+  .vs-reviews-rating .vs-google-count {
+    font-size: .72rem;
+  }
+
+  .vs-google-badge {
+    font-size: .78rem;
+    padding: 6px 10px;
+  }
+
+  .vs-google-logo,
+  .vs-google-logo svg {
+    width: 18px;
+    height: 18px;
+  }
+}
 
 /* ==========================================================================
    17. ARTICLE / BLOG CARDS
@@ -3462,5 +3757,525 @@ body.vs-rtl .vs-lang-menu li a {
   .vs-single-content a {
     color: #000;
     text-decoration: underline;
+  }
+}
+
+
+.vs-cat-pill .vs-cat-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  margin-left: 2px;
+  font-family: var(--font-bold) !important;
+  font-size: .68rem;
+  font-weight: 800;
+  color: var(--ink-3);
+  background: var(--surface-2);
+  border-radius: 999px;
+  line-height: 1;
+}
+
+.vs-cat-pill.vs-active .vs-cat-count {
+  background: rgba(255, 255, 255, .2);
+  color: #fff;
+}
+
+/* ==========================================================================
+   35. FOOTER
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   35a. CTA strip
+   -------------------------------------------------------------------------- */
+.vs-footer-cta {
+  background: var(--accent-grad);
+  color: #fff;
+  padding: 56px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.vs-footer-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 80% at 20% 50%, rgba(255, 255, 255, .12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.vs-footer-cta-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.vs-footer-cta-text h2 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.vs-footer-cta-text p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, .9);
+  max-width: 55ch;
+  line-height: 1.6;
+}
+
+.vs-footer-cta-btns {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.vs-footer-cta-btns .vs-btn-primary {
+  background: #fff;
+  color: var(--accent);
+  box-shadow: 0 6px 20px -6px rgba(0, 0, 0, .25);
+}
+
+.vs-footer-cta-btns .vs-btn-primary:hover {
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, .35);
+  color: var(--accent);
+}
+
+.vs-footer-cta-outline {
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgba(255, 255, 255, .5);
+}
+
+.vs-footer-cta-outline:hover {
+  background: rgba(255, 255, 255, .15);
+  border-color: #fff;
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   35b. Main footer
+   -------------------------------------------------------------------------- */
+.vs-footer-main {
+  background: var(--primary);
+  color: rgba(255, 255, 255, .7);
+  padding: 72px 0 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.vs-footer-main::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 80% at 90% 10%, rgba(194, 65, 12, .08) 0%, transparent 60%),
+    radial-gradient(50% 60% at 10% 90%, rgba(30, 58, 95, .5) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.vs-footer-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+/* Brand column */
+.vs-footer-brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.vs-footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.vs-footer-logo {
+  max-height: 44px;
+  width: auto;
+  display: block;
+
+  opacity: .95;
+}
+
+.vs-footer-logo-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: var(--accent-grad);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: var(--font-bold) !important;
+  font-size: 1.15rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.vs-footer-logo-text {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-bold) !important;
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -.03em;
+}
+
+.vs-footer-logo-tagline {
+  display: block;
+  font-family: var(--font-family) !important;
+  font-size: .6rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, .55);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.vs-footer-desc {
+  font-size: .9rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, .65);
+  max-width: 40ch;
+}
+
+/* Social icons */
+.vs-footer-socials {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.vs-footer-social {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, .08);
+  color: rgba(255, 255, 255, .75);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .95rem;
+  transition: .2s var(--ease);
+  text-decoration: none;
+}
+
+.vs-footer-social:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px -6px rgba(194, 65, 12, .5);
+}
+
+/* Link columns */
+.vs-footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.vs-footer-col-title {
+  font-family: var(--font-bold) !important;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .5);
+  margin: 0;
+}
+
+.vs-footer-col-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vs-footer-col-list li {
+  margin: 0;
+}
+
+.vs-footer-col-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .9rem;
+  color: rgba(255, 255, 255, .7);
+  text-decoration: none;
+  transition: .2s var(--ease);
+  position: relative;
+}
+
+.vs-footer-col-list a i {
+  font-size: .78rem;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.vs-footer-col-list a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -2px;
+  height: 1px;
+  background: var(--accent);
+  transition: right .3s var(--ease);
+}
+
+.vs-footer-col-list a:hover {
+  color: #fff;
+}
+
+.vs-footer-col-list a:hover::after {
+  right: 0;
+}
+
+/* --------------------------------------------------------------------------
+   35c. Trust row
+   -------------------------------------------------------------------------- */
+.vs-footer-trust {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 32px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.vs-footer-trust-label {
+  font-family: var(--font-bold) !important;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .4);
+}
+
+.vs-footer-trust-items {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.vs-footer-trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .85rem;
+  color: rgba(255, 255, 255, .65);
+  text-decoration: none;
+  transition: color .2s var(--ease);
+}
+
+.vs-footer-trust-item i {
+  color: var(--accent);
+  font-size: .8rem;
+}
+
+.vs-footer-trust-item svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+a.vs-footer-trust-item:hover {
+  color: #fff;
+}
+
+.vs-footer-trust-item strong {
+  color: #fff;
+  font-family: var(--font-bold) !important;
+}
+
+.vs-footer-trust-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, .12);
+}
+
+/* --------------------------------------------------------------------------
+   35d. Legal strip
+   -------------------------------------------------------------------------- */
+.vs-footer-legal {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 32px;
+  flex-wrap: wrap;
+}
+
+.vs-footer-legal-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 60ch;
+}
+
+.vs-footer-copyright {
+  font-size: .82rem;
+  color: rgba(255, 255, 255, .55);
+}
+
+.vs-footer-disclaimer {
+  font-size: .78rem;
+  color: rgba(255, 255, 255, .4);
+  line-height: 1.6;
+}
+
+.vs-footer-legal-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.vs-footer-legal-links a {
+  font-size: .82rem;
+  color: rgba(255, 255, 255, .55);
+  text-decoration: none;
+  transition: color .2s var(--ease);
+}
+
+.vs-footer-legal-links a:hover {
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   35e. Back to top
+   -------------------------------------------------------------------------- */
+.vs-back-to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 90;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent-grad);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px -6px rgba(194, 65, 12, .5);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: .3s var(--ease);
+}
+
+.vs-back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.vs-back-to-top:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px -6px rgba(194, 65, 12, .6);
+}
+
+.vs-back-to-top:active {
+  transform: scale(.95);
+}
+
+/* --------------------------------------------------------------------------
+   35f. Footer responsive
+   -------------------------------------------------------------------------- */
+
+/* Tablet */
+@media (min-width: 600px) {
+  .vs-footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 48px;
+  }
+
+  .vs-footer-brand-col {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Desktop */
+@media (min-width: 900px) {
+  .vs-footer-main {
+    padding: 96px 0 40px;
+  }
+
+  .vs-footer-grid {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 56px;
+  }
+
+  .vs-footer-brand-col {
+    grid-column: auto;
+  }
+
+  .vs-footer-legal {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+
+  .vs-footer-legal-left {
+    max-width: 55%;
+  }
+
+  .vs-back-to-top {
+    right: 32px;
+    bottom: 32px;
+  }
+}
+
+/* Mobile tweaks */
+@media (max-width: 640px) {
+  .vs-footer-cta {
+    padding: 44px 0;
+    text-align: center;
+  }
+
+  .vs-footer-cta-inner {
+    justify-content: center;
+  }
+
+  .vs-footer-cta-btns {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .vs-footer-cta-btns .vs-btn {
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .vs-footer-legal {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
   }
 }

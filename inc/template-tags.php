@@ -75,3 +75,31 @@ function vs_logo_initials() {
     }
     return strtoupper( mb_substr( $name, 0, 2 ) );
 }
+
+/**
+ * Get the blog archive page URL.
+ * Looks for a page with the "Articles Archive" template, or falls back by slug.
+ */
+function vs_get_blog_url() {
+    // 1. Find a page using the "page-articles.php" template
+    $template_pages = get_pages( array(
+        'meta_key'   => '_wp_page_template',
+        'meta_value' => 'page-articles.php',
+        'number'     => 1,
+    ) );
+
+    if ( ! empty( $template_pages ) ) {
+        return get_permalink( $template_pages[0]->ID );
+    }
+
+    // 2. Fall back to common slugs
+    foreach ( array( 'articles', 'blog', 'insights', 'news' ) as $slug ) {
+        $page = get_page_by_path( $slug );
+        if ( $page ) {
+            return get_permalink( $page );
+        }
+    }
+
+    // 3. Last resort — homepage
+    return home_url( '/' );
+}
