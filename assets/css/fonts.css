@@ -1,0 +1,85 @@
+/* ==========================================================================
+   ADOBE CLEAN — Self-hosted fonts
+   Path: assets/css/fonts.css  →  fonts at  ../fonts/adobe/
+   ========================================================================== */
+
+@font-face {
+    font-family: "Adobe Clean";
+    src: url("../fonts/adobe/AdobeClean-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Adobe Clean";
+    src: url("../fonts/adobe/AdobeClean-LightIt.ttf") format("truetype");
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Adobe Clean";
+    src: url("../fonts/adobe/AdobeClean-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Adobe Clean";
+    src: url("../fonts/adobe/AdobeClean-It.ttf") format("truetype");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Adobe Clean";
+    src: url("../fonts/adobe/AdobeClean-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Adobe Clean";
+    src: url("../fonts/adobe/AdobeClean-BoldItalic.ttf") format("truetype");
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Semi-condensed variant — different family name */
+@font-face {
+    font-family: "Adobe Clean Semi Condensed";
+    src: url("../fonts/adobe/AdobeClean-SemiCn.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Adobe Clean Semi Condensed";
+    src: url("../fonts/adobe/AdobeClean-SemiCnIt.ttf") format("truetype");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Adobe Clean Semi Condensed";
+    src: url("../fonts/adobe/AdobeClean-BoldSemiCn.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Adobe Clean Semi Condensed";
+    src: url("../fonts/adobe/AdobeClean-BoldSemiCnIt.ttf") format("truetype");
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
