@@ -34,15 +34,9 @@ function vs_setup() {
         'flex-width'  => true,
     ) );
 
-    // register_nav_menus( array(
-    //     'primary' => __( 'Primary Menu', 'visahouse' ),
-    //     'footer'  => __( 'Footer Menu', 'visahouse' ),
-    //     'legal'   => __( 'Legal Menu', 'visahouse' ),
-    // ) );
-
     register_nav_menus( array(
-    'primary' => __( 'Main Menu', 'visahouse' ),
-) );
+        'primary' => __( 'Main Menu', 'visahouse' ),
+    ) );
 
     add_image_size( 'vs-blog-card', 600, 375, true );
     add_image_size( 'vs-hero', 900, 600, true );
@@ -67,6 +61,7 @@ require_once VS_DIR . '/inc/cpt.php';
 require_once VS_DIR . '/inc/service-meta.php';
 require_once VS_DIR . '/inc/review-meta.php';
 require_once VS_DIR . '/inc/customizer.php';
+require_once VS_DIR . '/inc/typography.php'; // NEW INCLUDE
 require_once VS_DIR . '/inc/template-tags.php';
 require_once VS_DIR . '/inc/class-vs-walker-nav.php';
 require_once VS_DIR . '/inc/modal-cpt.php';
@@ -75,8 +70,11 @@ require_once VS_DIR . '/inc/modal-helpers.php';
 require_once VS_DIR . '/inc/services-modal.php';
 require_once VS_DIR . '/inc/menu-icons.php';
 require_once VS_DIR . '/inc/service-category-meta.php';
-require_once VS_DIR . '/inc/footer-customizer.php';
 
+require_once VS_DIR . '/inc/singleton-cpt.php';
+require_once VS_DIR . '/inc/about-cpt.php';
+require_once VS_DIR . '/inc/footer-cpt.php';
+require_once VS_DIR . '/inc/link-picker.php';
 
 /**
  * Body classes.

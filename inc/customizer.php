@@ -1,6 +1,6 @@
 <?php
 /**
- * Customizer — all homepage text fields.
+ * Customizer — extended with Typography, Colors, and Appearance.
  *
  * @package VisaHouse
  */
@@ -64,46 +64,6 @@ function vs_customize_register( $wp_customize ) {
             'type'    => 'text',
         ) );
     }
-
-    /* ============================================================
-       ABOUT
-       ============================================================ */
-    $wp_customize->add_section( 'vs_about', array(
-        'title'    => __( 'Homepage — About', 'visahouse' ),
-        'priority' => 32,
-    ) );
-
-    $about_text_fields = array(
-        'vs_about_title'  => array( 'label' => 'Title (HTML allowed, use <em>)', 'default' => 'We are <em>800 DOCS</em> — on your side.', 'html' => true ),
-        'vs_about_text'   => array( 'label' => 'About text', 'default' => '800 DOCS LLC SOC is the private, licensed documentation company behind VisaHouse.ae. We check your eligibility free, file every application correctly through official GDRFA and ICP channels, and follow it up until your family\'s Emirates IDs are in your hand.', 'html' => true ),
-        'vs_stat_1_value' => array( 'label' => 'Stat 1 — Value', 'default' => '20,000+', 'html' => false ),
-        'vs_stat_1_label' => array( 'label' => 'Stat 1 — Label', 'default' => 'Visas processed', 'html' => false ),
-        'vs_stat_2_value' => array( 'label' => 'Stat 2 — Value', 'default' => '4.9 ★', 'html' => false ),
-        'vs_stat_2_label' => array( 'label' => 'Stat 2 — Label', 'default' => 'Rated on Google', 'html' => false ),
-        'vs_stat_3_value' => array( 'label' => 'Stat 3 — Value', 'default' => '100%', 'html' => false ),
-        'vs_stat_3_label' => array( 'label' => 'Stat 3 — Label', 'default' => 'Online from start to finish', 'html' => false ),
-    );
-    foreach ( $about_text_fields as $key => $cfg ) {
-        $wp_customize->add_setting( $key, array(
-            'default'           => $cfg['default'],
-            'sanitize_callback' => $cfg['html'] ? 'wp_kses_post' : 'sanitize_text_field',
-        ) );
-        $wp_customize->add_control( $key, array(
-            'label'   => $cfg['label'],
-            'section' => 'vs_about',
-            'type'    => 'text',
-        ) );
-    }
-
-    // About image
-    $wp_customize->add_setting( 'vs_about_image', array(
-        'default'           => '',
-        'sanitize_callback' => 'esc_url_raw',
-    ) );
-    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'vs_about_image', array(
-        'label'   => __( 'About image', 'visahouse' ),
-        'section' => 'vs_about',
-    ) ) );
 
     /* ============================================================
        CTA
@@ -196,7 +156,6 @@ function vs_customize_register( $wp_customize ) {
                 'type'    => 'text',
             ) );
         }
-        // Textarea for text
         $wp_customize->add_setting( "vs_step_{$i}_text", array(
             'default'           => $d['text'],
             'sanitize_callback' => 'sanitize_textarea_field',
@@ -234,6 +193,159 @@ function vs_customize_register( $wp_customize ) {
             'type'    => 'text',
         ) );
     }
+
+    /* ============================================================
+       TYPOGRAPHY
+       ============================================================ */
+    $wp_customize->add_section( 'vs_typography', array(
+        'title'    => __( 'VisaHouse — Typography', 'visahouse' ),
+        'priority' => 40,
+    ) );
+
+    $font_choices = array(
+        'Adobe Clean'                => 'Adobe Clean',
+        'Adobe Clean Semi Condensed' => 'Adobe Clean Semi Condensed',
+        'Manrope'                    => 'Manrope',
+        'system-ui'                  => 'System UI',
+        'custom'                     => 'Custom…',
+    );
+
+    // Fonts
+    foreach ( array( 'body', 'heading', 'paragraph', 'link' ) as $type ) {
+        $wp_customize->add_setting( "vs_font_{$type}", array(
+            'default' => 'Adobe Clean',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_control( "vs_font_{$type}", array(
+            'label'   => "Font Family: " . ucfirst($type),
+            'section' => 'vs_typography',
+            'type'    => 'select',
+            'choices' => $font_choices,
+        ) );
+        // Custom Font Input
+        $wp_customize->add_setting( "vs_font_{$type}_custom", array(
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+        ) );
+        $wp_customize->add_control( "vs_font_{$type}_custom", array(
+            'label'   => "Custom Font Family (" . ucfirst($type) . ")",
+            'section' => 'vs_typography',
+            'type'    => 'text',
+        ) );
+    }
+
+    // Sizes
+    $sizes = array(
+        'body' => [16, 16, 22], 'body_mobile' => [15, 14, 20],
+        'h1' => [48, 28, 72], 'h2' => [36, 24, 56], 'h3' => [24, 18, 40], 'h4' => [20, 16, 32],
+        'p' => [16, 14, 22], 'a' => [16, 14, 22]
+    );
+    foreach ( $sizes as $key => $cfg ) {
+        $wp_customize->add_setting( "vs_font_size_{$key}", array(
+            'default' => $cfg[0],
+            'sanitize_callback' => 'absint',
+        ) );
+        $wp_customize->add_control( "vs_font_size_{$key}", array(
+            'label'   => "Font Size: " . strtoupper($key) . " (px)",
+            'section' => 'vs_typography',
+            'type'    => 'number',
+            'input_attrs' => array('min' => $cfg[1], 'max' => $cfg[2], 'step' => 1),
+        ) );
+    }
+
+    // Weights & Line Heights
+    $wp_customize->add_setting( 'vs_weight_body', array( 'default' => '400', 'sanitize_callback' => 'sanitize_text_field' ) );
+    $wp_customize->add_control( 'vs_weight_body', array( 'label' => 'Weight: Body', 'section' => 'vs_typography', 'type' => 'select', 'choices' => array('300'=>'300', '400'=>'400', '500'=>'500', '600'=>'600', '700'=>'700') ) );
+    
+    $wp_customize->add_setting( 'vs_weight_heading', array( 'default' => '700', 'sanitize_callback' => 'sanitize_text_field' ) );
+    $wp_customize->add_control( 'vs_weight_heading', array( 'label' => 'Weight: Heading', 'section' => 'vs_typography', 'type' => 'select', 'choices' => array('400'=>'400', '500'=>'500', '600'=>'600', '700'=>'700', '800'=>'800') ) );
+    
+    $wp_customize->add_setting( 'vs_weight_link', array( 'default' => '600', 'sanitize_callback' => 'sanitize_text_field' ) );
+    $wp_customize->add_control( 'vs_weight_link', array( 'label' => 'Weight: Link', 'section' => 'vs_typography', 'type' => 'select', 'choices' => array('400'=>'400', '500'=>'500', '600'=>'600', '700'=>'700', '800'=>'800') ) );
+
+    $wp_customize->add_setting( 'vs_line_height_body', array( 'default' => 1.6, 'sanitize_callback' => 'vs_sanitize_float' ) );
+    $wp_customize->add_control( 'vs_line_height_body', array( 'label' => 'Line Height: Body', 'section' => 'vs_typography', 'type' => 'number', 'input_attrs' => array('min'=>1.0,'max'=>2.0,'step'=>0.05) ) );
+
+    $wp_customize->add_setting( 'vs_line_height_heading', array( 'default' => 1.15, 'sanitize_callback' => 'vs_sanitize_float' ) );
+    $wp_customize->add_control( 'vs_line_height_heading', array( 'label' => 'Line Height: Heading', 'section' => 'vs_typography', 'type' => 'number', 'input_attrs' => array('min'=>1.0,'max'=>2.0,'step'=>0.05) ) );
+
+    $wp_customize->add_setting( 'vs_letter_spacing_heading', array( 'default' => '-.025em', 'sanitize_callback' => 'sanitize_text_field' ) );
+    $wp_customize->add_control( 'vs_letter_spacing_heading', array( 'label' => 'Letter Spacing: Heading', 'section' => 'vs_typography', 'type' => 'text' ) );
+
+
+    /* ============================================================
+       COLORS
+       ============================================================ */
+    $wp_customize->add_section( 'vs_colors', array(
+        'title'    => __( 'VisaHouse — Colors', 'visahouse' ),
+        'priority' => 41,
+    ) );
+
+    $wp_customize->add_setting( 'vs_color_preset', array(
+        'default' => 'brand',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'vs_color_preset', array(
+        'label'   => 'Color Preset',
+        'section' => 'vs_colors',
+        'type'    => 'radio',
+        'choices' => array(
+            'brand'  => 'Brand (Default)',
+            'ocean'  => 'Ocean',
+            'forest' => 'Forest',
+            'slate'  => 'Slate',
+            'violet' => 'Violet',
+            'sunset' => 'Sunset',
+            'rose'   => 'Rose',
+            'custom' => 'Custom',
+        ),
+    ) );
+
+    $wp_customize->add_setting( 'vs_color_primary', array( 'default' => '#0A1F3D', 'sanitize_callback' => 'sanitize_hex_color' ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'vs_color_primary', array( 'label' => 'Primary Color', 'section' => 'vs_colors' ) ) );
+
+    $wp_customize->add_setting( 'vs_color_accent', array( 'default' => '#C2410C', 'sanitize_callback' => 'sanitize_hex_color' ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'vs_color_accent', array( 'label' => 'Accent Color', 'section' => 'vs_colors' ) ) );
+
+    $wp_customize->add_setting( 'vs_color_accent_hover', array( 'default' => '#9A3309', 'sanitize_callback' => 'sanitize_hex_color' ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'vs_color_accent_hover', array( 'label' => 'Accent Hover Color', 'section' => 'vs_colors' ) ) );
+
+    /* ============================================================
+       APPEARANCE
+       ============================================================ */
+    $wp_customize->add_section( 'vs_appearance', array(
+        'title'    => __( 'VisaHouse — Appearance', 'visahouse' ),
+        'priority' => 42,
+    ) );
+
+    $wp_customize->add_setting( 'vs_color_mode', array(
+        'default' => 'light',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'vs_color_mode', array(
+        'label'   => 'Color Mode',
+        'section' => 'vs_appearance',
+        'type'    => 'radio',
+        'choices' => array(
+            'light' => 'Light (Default)',
+            'dark'  => 'Dark',
+            'auto'  => 'Auto (Follow OS)',
+        ),
+    ) );
+
+    $dark_colors = array(
+        'vs_dark_surface'   => '#0B1220',
+        'vs_dark_surface_2' => '#131C2E',
+        'vs_dark_line'      => '#1F2A44',
+        'vs_dark_ink'       => '#E2E8F0',
+        'vs_dark_ink_2'     => '#94A3B8',
+        'vs_dark_paper'     => '#050A14',
+    );
+    foreach ( $dark_colors as $key => $default ) {
+        $wp_customize->add_setting( $key, array( 'default' => $default, 'sanitize_callback' => 'sanitize_hex_color' ) );
+        $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $key, array( 'label' => 'Dark Mode: ' . str_replace('Vs Dark ', '', ucwords(str_replace('_', ' ', $key))), 'section' => 'vs_appearance' ) ) );
+    }
+
 }
 add_action( 'customize_register', 'vs_customize_register' );
 
@@ -245,4 +357,8 @@ function vs_sanitize_text_or_email( $value ) {
         return sanitize_email( $value );
     }
     return sanitize_text_field( $value );
+}
+
+function vs_sanitize_float( $value ) {
+    return (float) $value;
 }

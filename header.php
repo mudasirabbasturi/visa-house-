@@ -157,6 +157,11 @@
                 <i class="fa-brands fa-whatsapp"></i>
             </button>
 
+            <!-- Theme Toggle -->
+            <button type="button" onclick="vsToggleTheme()" class="vs-icon-btn vs-hide-mobile" aria-label="<?php esc_attr_e( 'Toggle dark mode', 'visahouse' ); ?>">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+
             <!-- Mobile toggle -->
             <button type="button" class="vs-icon-btn vs-mobile-toggle" id="vsMobileToggle" aria-label="<?php esc_attr_e( 'Open menu', 'visahouse' ); ?>" aria-expanded="false">
                 <i class="fa-solid fa-bars"></i>

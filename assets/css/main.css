@@ -132,7 +132,7 @@ body {
 
 /* Force font everywhere except FontAwesome icons */
 body *:not(.fa):not(.fa-solid):not(.fa-regular):not(.fa-brands):not([class*="fa-"]) {
-  font-family: var(--font-family) !important;
+  font-family: var(--font-family);
 }
 
 body h1,
@@ -142,7 +142,7 @@ body h4,
 body h5,
 body h6,
 body .vs-font-bold {
-  font-family: var(--font-bold) !important;
+  font-family: var(--font-heading, var(--font-bold));
 }
 
 body.vs-has-modal,
@@ -272,7 +272,7 @@ ol {
   padding: 0 20px;
   font-size: .9rem;
   color: var(--ink-2);
-  background: #fff;
+  background: var(--paper);
   border: 1.5px solid var(--line);
 }
 
@@ -304,7 +304,7 @@ ol {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, .95);
+  background: var(--paper);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 1px solid var(--line-soft);
@@ -430,7 +430,7 @@ ol {
   top: calc(100% + 14px);
   left: 0;
   min-width: 240px;
-  background: #fff;
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
   box-shadow: 0 24px 48px -16px rgba(10, 31, 61, .18), 0 8px 20px -8px rgba(10, 31, 61, .08);
@@ -482,7 +482,7 @@ ol {
   justify-content: center;
   border-radius: 12px;
   border: 1.5px solid var(--line);
-  background: #fff;
+  background: var(--paper);
   color: var(--ink-2);
   font-size: 1rem;
   cursor: pointer;
@@ -529,7 +529,7 @@ ol {
   right: 0;
   bottom: 0;
   width: min(400px, 88vw);
-  background: #fff;
+  background: var(--paper);
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
@@ -655,7 +655,7 @@ ol {
   padding: 0 14px;
   border-radius: var(--r-pill);
   border: 1.5px solid var(--line);
-  background: #fff;
+  background: var(--paper);
   color: var(--ink-2);
   font-family: var(--font-family);
   font-size: .82rem;
@@ -734,7 +734,7 @@ ol {
 
   min-width: 220px;
   max-width: 280px;
-  background: #fff;
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
   box-shadow:
@@ -1048,7 +1048,7 @@ ol {
   letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--accent);
-  background: #fff;
+  background: var(--paper);
   padding: 8px 16px 8px 12px;
   border-radius: var(--r-pill);
   border: 1px solid rgba(194, 65, 12, .15);
@@ -1167,7 +1167,7 @@ ol {
   font-size: .78rem;
   font-weight: 600;
   color: var(--ink-3);
-  background: #fff;
+  background: var(--paper);
   border: 1px solid var(--line);
   padding: 6px 12px;
   border-radius: var(--r-pill);
@@ -1188,7 +1188,7 @@ ol {
 }
 
 .vs-calc-card {
-  background: #fff;
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--r-xl);
   box-shadow: var(--sh-lg);
@@ -1290,7 +1290,7 @@ ol {
   border-radius: 13px;
   padding: 13px 14px;
   cursor: pointer;
-  background: #fff;
+  background: var(--paper);
   transition: border-color .15s ease, background .15s ease;
   text-align: left;
   width: 100%;
@@ -1374,7 +1374,7 @@ ol {
   align-items: center;
   gap: 20px;
   padding: 28px 24px;
-  background: #fff;
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--r-xl);
   box-shadow: var(--sh-sm);
@@ -1455,7 +1455,7 @@ ol {
 }
 
 .vs-service-detail {
-  background: #fff;
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--r-xl);
   overflow: hidden;
@@ -1685,7 +1685,7 @@ ol {
 }
 
 .vs-service-cta-wa {
-  background: #fff;
+  background: var(--paper);
   color: #128C7E;
   border: 1.5px solid rgba(18, 140, 126, .25);
 }
@@ -1711,7 +1711,7 @@ ol {
 
 .vs-step-creative {
   position: relative;
-  background: #fff;
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--r-xl);
   padding: 32px 28px 28px;
@@ -1939,7 +1939,7 @@ ol {
   gap: 14px;
   margin-top: 28px;
   padding: 10px 14px;
-  background: #fff;
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--r-pill);
   max-width: 620px;
@@ -2079,7 +2079,7 @@ ol {
 }
 
 .vs-google-badge:hover {
-  background: #fff;
+  background: var(--paper);
   border-color: #4285F4;
   box-shadow: 0 6px 18px -6px rgba(66, 133, 244, .25);
   transform: translateY(-1px);
@@ -2124,7 +2124,7 @@ ol {
    16c. Review card
    -------------------------------------------------------------------------- */
 .vs-review-card {
-  background: #fff;
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
   padding: 24px 26px;
@@ -2179,7 +2179,7 @@ ol {
 }
 
 .vs-review-card:hover .vs-review-google {
-  background: #fff;
+  background: var(--paper);
   border-color: #4285F4;
   box-shadow: 0 4px 12px -4px rgba(66, 133, 244, .3);
 }
@@ -2297,7 +2297,7 @@ ol {
 }
 
 .vs-art-card {
-  background: #fff;
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
   overflow: hidden;
@@ -2523,7 +2523,7 @@ ol {
 }
 
 .vs-faq-item {
-  background: #fff;
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--r);
   overflow: hidden;
@@ -2622,7 +2622,7 @@ ol {
   height: 56px;
   padding: 0 32px;
   font-size: 1rem;
-  background: #fff;
+  background: var(--paper);
   color: var(--primary);
 }
 
@@ -2674,7 +2674,7 @@ ol {
 .vs-modal {
   width: 100%;
   max-width: 520px;
-  background: #fff;
+  background: var(--paper);
   border-radius: 24px 24px 0 0;
   padding: 20px 24px calc(28px + env(safe-area-inset-bottom));
   box-shadow: 0 -12px 48px rgba(10, 31, 61, .2);
@@ -2739,7 +2739,7 @@ ol {
   padding: 16px 18px;
   border: 1.5px solid var(--line);
   border-radius: 14px;
-  background: #fff;
+  background: var(--paper);
   cursor: pointer;
   text-align: left;
   transition: .15s var(--ease);
@@ -2791,7 +2791,7 @@ ol {
   margin-top: 16px;
   border: 1.5px solid var(--line);
   border-radius: 14px;
-  background: #fff;
+  background: var(--paper);
   color: var(--ink-2);
   font-weight: 700;
   font-size: .95rem;
@@ -2910,7 +2910,7 @@ ol {
   gap: 8px;
   padding: 10px 18px;
   border-radius: var(--r-pill);
-  background: #fff;
+  background: var(--paper);
   border: 1.5px solid var(--line);
   font-size: .85rem;
   font-weight: 700;
@@ -3137,7 +3137,7 @@ ol {
   padding: 0 12px;
   margin: 0 3px;
   border-radius: 10px;
-  background: #fff;
+  background: var(--paper);
   border: 1.5px solid var(--line);
   color: var(--ink-2);
   font-weight: 700;
@@ -3165,7 +3165,7 @@ ol {
   display: flex;
   gap: 10px;
   max-width: 520px;
-  background: #fff;
+  background: var(--paper);
   border: 1.5px solid var(--line);
   border-radius: var(--r-pill);
   padding: 6px 6px 6px 20px;
@@ -3399,7 +3399,7 @@ ol {
 .vs-sidebar .widget {
   margin-bottom: 32px;
   padding: 24px;
-  background: #fff;
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
 }
@@ -3751,7 +3751,7 @@ body.vs-rtl .vs-lang-menu li a {
 
   body {
     color: #000;
-    background: #fff;
+    background: var(--paper);
   }
 
   .vs-single-content a {
@@ -3836,7 +3836,7 @@ body.vs-rtl .vs-lang-menu li a {
 }
 
 .vs-footer-cta-btns .vs-btn-primary {
-  background: #fff;
+  background: var(--paper);
   color: var(--accent);
   box-shadow: 0 6px 20px -6px rgba(0, 0, 0, .25);
 }
@@ -4278,4 +4278,9 @@ a.vs-footer-trust-item:hover {
     align-items: flex-start;
     gap: 20px;
   }
+}
+
+
+.vs-about-read-more {
+  margin-top: 32px;
 }

@@ -10,6 +10,23 @@
 
     function $(id) { return document.getElementById(id); }
 
+    /* Theme Toggle */
+    window.vsToggleTheme = function() {
+        if (document.body.classList.contains('vs-theme-dark')) {
+            document.body.classList.remove('vs-theme-dark');
+            localStorage.setItem('vs-theme', 'light');
+        } else {
+            document.body.classList.add('vs-theme-dark');
+            localStorage.setItem('vs-theme', 'dark');
+        }
+    };
+
+    (function() {
+        if (localStorage.getItem('vs-theme') === 'dark') {
+            document.body.classList.add('vs-theme-dark');
+        }
+    })();
+
     /* Analytics */
     window.vsTrack = function (name) {
         try {

@@ -60,7 +60,8 @@
 .hv2-hero {
     position: relative;
     width: 100%;
-    min-height: 720px;
+    /* min-height: 720px; */
+    min-height: 600px;
     overflow: hidden;
     background: var(--primary);
 }
@@ -275,7 +276,7 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background: #fff;
+    background: var(--paper);
     color: var(--primary);
     padding: 16px 28px;
     border-radius: var(--r-pill);
@@ -476,6 +477,17 @@
 /* ==========================================================================
    FLOATING CALCULATOR CARD
    ========================================================================== */
+.hv2-calc-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    pointer-events: none;
+    /* Let clicks pass through to slider */
+    z-index: 10;
+}
+
 .hv2-calc-wrap {
     position: absolute;
     top: 50%;
@@ -489,7 +501,7 @@
 
 .hv2-calc {
     position: relative;
-    background: #fff;
+    background: var(--paper);
     border-radius: var(--r-2xl);
     overflow: hidden;
     display: flex;
@@ -500,6 +512,7 @@
         0 24px 48px -16px rgba(10, 31, 61, .3),
         0 0 0 1px rgba(255, 255, 255, .08);
 }
+
 
 .hv2-calc::before {
     content: "";
@@ -520,7 +533,7 @@
     display: flex;
     align-items: center;
     gap: 14px;
-    background: #fff;
+    background: var(--paper);
 }
 
 .hv2-calc-icon {
@@ -638,7 +651,7 @@
     padding: 18px 22px 20px;
     scrollbar-width: thin;
     scrollbar-color: var(--accent) transparent;
-    background: #fff;
+    background: var(--paper);
 }
 
 .hv2-calc-body::-webkit-scrollbar {
@@ -691,7 +704,7 @@
     border: 1px solid var(--line);
     border-radius: var(--r-lg);
     overflow: hidden;
-    background: #fff;
+    background: var(--paper);
 }
 
 .hv2-row {
@@ -703,7 +716,7 @@
     transition: .22s var(--ease);
     border-top: 1px solid var(--line-soft);
     position: relative;
-    background: #fff;
+    background: var(--paper);
     border-left: none;
     border-right: none;
     border-bottom: none;
@@ -760,7 +773,7 @@
 }
 
 .hv2-row:hover .hv2-row-icon {
-    background: #fff;
+    background: var(--paper);
     transform: scale(1.05);
 }
 
@@ -914,7 +927,7 @@
 
 .hv2-btn-ghost {
     flex: 0 0 auto;
-    background: #fff;
+    background: var(--paper);
     border: 1.5px solid var(--line);
     color: var(--ink-2);
     padding: 13px 15px;
@@ -986,6 +999,12 @@
     /* Hide big floating icon on tablet */
     .hv2-slide-big-icon {
         display: none;
+    }
+
+    .hv2-calc-container {
+        position: relative;
+        inset: auto;
+        pointer-events: auto;
     }
 
     .hv2-calc-wrap {

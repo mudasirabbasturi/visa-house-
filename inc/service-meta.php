@@ -28,6 +28,7 @@ function vs_service_meta_box_render( $post ) {
     $icon         = get_post_meta( $post->ID, 'vs_service_icon', true ) ?: 'fa-people-roof';
     $icon_color   = get_post_meta( $post->ID, 'vs_service_icon_color', true ) ?: 'default';
     $calc_cat     = get_post_meta( $post->ID, 'vs_service_calc_category', true );
+    $get_started  = get_post_meta( $post->ID, 'vs_service_get_started_url', true );
     $price_label  = get_post_meta( $post->ID, 'vs_service_price_label', true ) ?: 'Government fees from';
     $price        = get_post_meta( $post->ID, 'vs_service_price', true );
     $features     = get_post_meta( $post->ID, 'vs_service_features', true );
@@ -84,6 +85,11 @@ function vs_service_meta_box_render( $post ) {
             <p class="vs-svc-hint">Leave blank to hide the calculator button on this service.</p>
         </div>
 
+        <label for="vs_service_get_started_url"><?php esc_html_e( 'Get Started URL', 'visahouse' ); ?></label>
+        <div>
+            <input type="text" id="vs_service_get_started_url" name="vs_service_get_started_url" value="<?php echo esc_attr( $get_started ); ?>" placeholder="#modal-id or https://...">
+        </div>
+
         <label for="vs_service_price_label"><?php esc_html_e( 'Price label', 'visahouse' ); ?></label>
         <div>
             <input type="text" id="vs_service_price_label" name="vs_service_price_label" value="<?php echo esc_attr( $price_label ); ?>">
@@ -121,6 +127,7 @@ function vs_service_meta_save( $post_id ) {
         'vs_service_icon',
         'vs_service_icon_color',
         'vs_service_calc_category',
+        'vs_service_get_started_url',
         'vs_service_price_label',
         'vs_service_price',
     );

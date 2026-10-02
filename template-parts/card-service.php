@@ -9,6 +9,7 @@ $post_id    = get_the_ID();
 $icon       = get_post_meta( $post_id, 'vs_service_icon', true ) ?: 'fa-people-roof';
 $color      = get_post_meta( $post_id, 'vs_service_icon_color', true ) ?: 'default';
 $calc_cat   = get_post_meta( $post_id, 'vs_service_calc_category', true );
+$get_started = get_post_meta( $post_id, 'vs_service_get_started_url', true );
 $price      = get_post_meta( $post_id, 'vs_service_price', true );
 $price_lbl  = get_post_meta( $post_id, 'vs_service_price_label', true ) ?: __( 'Government fees from', 'visahouse' );
 $features   = get_post_meta( $post_id, 'vs_service_features', true );
@@ -76,8 +77,13 @@ if ( ! is_array( $features ) ) {
             <!-- Row 2: Two buttons side-by-side -->
             <div class="vs-service-foot-row vs-service-foot-row-ctas">
 
-                <!-- Left: Get Started (calculator) -->
-                <?php if ( $calc_cat ) : ?>
+                <!-- Left: Get Started -->
+                <?php if ( $get_started ) : ?>
+                    <a class="vs-service-cta vs-service-cta-primary" href="<?php echo esc_attr( $get_started ); ?>">
+                        <i class="fa-solid fa-arrow-right"></i>
+                        <?php esc_html_e( 'Get Started', 'visahouse' ); ?>
+                    </a>
+                <?php elseif ( $calc_cat ) : ?>
                     <button type="button"
                             class="vs-service-cta vs-service-cta-primary"
                             onclick="vsOpenCalculator('<?php echo esc_js( $calc_cat ); ?>')">

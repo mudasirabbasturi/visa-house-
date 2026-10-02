@@ -1,0 +1,96 @@
+/*
+ * VisaHouse RTL Overrides
+ * Reverses direction, layout, and mirroring for Arabic and RTL languages.
+ */
+
+/* 1. Global Document & Typography */
+[dir="rtl"],
+body.vs-rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+/* 2. Topbar & Nav */
+body.vs-rtl .vs-topbar-actions {
+    flex-direction: row-reverse;
+}
+body.vs-rtl .vs-menu > li {
+    float: right;
+}
+body.vs-rtl .vs-nav-main ul ul {
+    left: auto;
+    right: 0;
+}
+
+/* 3. Icons that should flip */
+body.vs-rtl .fa-arrow-right,
+body.vs-rtl .fa-arrow-left,
+body.vs-rtl .fa-chevron-right,
+body.vs-rtl .fa-chevron-left,
+body.vs-rtl .fa-arrow-up-right-from-square,
+body.vs-rtl .fa-arrow-trend-up {
+    transform: scaleX(-1);
+}
+
+/* 4. Layout Grids (Rows where visual order matters) */
+body.vs-rtl .vs-breadcrumb,
+body.vs-rtl .vs-pagination .page-numbers {
+    flex-direction: row-reverse;
+}
+
+/* 5. Specific Padding & Margins Reversals */
+body.vs-rtl .vs-btn-icon-right { margin-left: 0; margin-right: 8px; }
+body.vs-rtl .vs-btn-icon-left { margin-right: 0; margin-left: 8px; }
+body.vs-rtl .vs-sidebar { padding-left: 0; padding-right: 40px; }
+body.vs-rtl .vs-searchform input { padding-right: 16px; padding-left: 48px; }
+body.vs-rtl .vs-searchform button { right: auto; left: 0; border-radius: 12px 0 0 12px; }
+
+/* 6. Hero v2 Fixed Constraints */
+body.vs-rtl .hv2-slide-content { 
+    text-align: right; 
+}
+body.vs-rtl .hv2-slide-inner {
+    align-items: flex-start;
+}
+body.vs-rtl .hv2-slide::before {
+    background:
+        linear-gradient(270deg, rgba(10, 31, 61, .92) 0%, rgba(10, 31, 61, .78) 35%, rgba(10, 31, 61, .45) 60%, rgba(10, 31, 61, .15) 100%),
+        linear-gradient(180deg, rgba(10, 31, 61, .30) 0%, rgba(10, 31, 61, .10) 40%, rgba(10, 31, 61, .55) 100%);
+}
+body.vs-rtl .hv2-calc-wrap {
+    left: 32px; 
+    right: auto; 
+}
+body.vs-rtl .hv2-slide-big-icon { 
+    left: 6%; 
+    right: auto; 
+    animation: floatRTL 6s ease-in-out infinite; 
+}
+@keyframes floatRTL {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(-3deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+}
+body.vs-rtl .hv2-dots {
+    order: 2;
+}
+body.vs-rtl .hv2-arrows {
+    order: 1;
+}
+body.vs-rtl .hv2-controls {
+    padding-left: 500px;
+    padding-right: 32px;
+}
+
+/* 7. Dark Mode Base (Auto/Manual hook) */
+body.vs-theme-dark {
+    --paper: #050A14;
+    --surface: #0B1220;
+    --surface-2: #131C2E;
+    --line: #1F2A44;
+    --line-soft: #162034;
+    --ink: #E2E8F0;
+    --ink-2: #94A3B8;
+    --ink-3: #64748B;
+    --ink-4: #475569;
+}

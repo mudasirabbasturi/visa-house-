@@ -18,14 +18,18 @@ $trust_label   = vs_option( 'vs_trust_label', 'Trusted by thousands' );
  * ---------------------------------------------------------------------- */
 $hero_cats = get_terms( array(
     'taxonomy'   => 'service_category',
-    'hide_empty' => true,
-    'number'     => 5,
-    'meta_key'   => 'vs_cat_section_order',
-    'orderby'    => 'meta_value_num',
-    'order'      => 'ASC',
+    'hide_empty' => false,
+    'number'     => 10,
 ) );
 
-if ( is_wp_error( $hero_cats ) || empty( $hero_cats ) ) {
+if ( ! is_wp_error( $hero_cats ) && ! empty( $hero_cats ) ) {
+    usort( $hero_cats, function( $a, $b ) {
+        $oa = (int) get_term_meta( $a->term_id, 'vs_cat_section_order', true );
+        $ob = (int) get_term_meta( $b->term_id, 'vs_cat_section_order', true );
+        return $oa <=> $ob;
+    });
+    $hero_cats = array_slice( $hero_cats, 0, 5 );
+} else {
     $hero_cats = array();
 }
 
@@ -120,6 +124,23 @@ if ( count( $calc_rows ) < 4 ) {
         if ( ! $exists ) $calc_rows[] = $row;
     }
 }
+
+// Check for custom HTML trigger page
+$trigger_query = new WP_Query( array(
+    'post_type'      => 'page',
+    'meta_key'       => '_wp_page_template',
+    'meta_value'     => 'template-calc-triggers.php',
+    'posts_per_page' => 1,
+    'post_status'    => 'publish',
+) );
+
+$trigger_content = '';
+if ( $trigger_query->have_posts() ) {
+    $trigger_content = $trigger_query->posts[0]->post_content;
+    // We do not apply 'the_content' filter to avoid adding automatic <p> tags around buttons
+    // unless necessary, but do_shortcode is safe.
+    $trigger_content = do_shortcode( $trigger_content );
+}
 ?>
 
 <section class="hv2-hero" id="vs-hero">
@@ -209,72 +230,14 @@ if ( count( $calc_rows ) < 4 ) {
         </div>
     </div>
 
-    <!-- ============================================================
-         FLOATING CALCULATOR CARD (static structure, dynamic rows)
-         ============================================================ -->
-    <div class="hv2-calc-wrap">
-        <div class="hv2-calc">
-
-            <div class="hv2-calc-head">
-                <div class="hv2-calc-icon"><i class="fa-solid fa-calculator"></i></div>
-                <div class="hv2-calc-title-wrap">
-                    <div class="hv2-calc-title"><?php esc_html_e( 'Visa Calculator', 'visahouse' ); ?></div>
-                    <div class="hv2-calc-sub"><?php esc_html_e( 'Select a service to begin', 'visahouse' ); ?></div>
-                </div>
-                <span class="hv2-calc-live"><?php esc_html_e( 'LIVE', 'visahouse' ); ?></span>
-            </div>
-
-            <div class="hv2-crumbs">
-                <span class="hv2-crumb is-current"><?php esc_html_e( 'All Services', 'visahouse' ); ?></span>
-            </div>
-
-            <div class="hv2-calc-body">
-                <div class="hv2-group">
-                    <div class="hv2-group-head">
-                        <h4><?php esc_html_e( 'Residence Visas', 'visahouse' ); ?></h4>
-                        <span><?php echo esc_html( str_pad( count( $calc_rows ), 2, '0', STR_PAD_LEFT ) ); ?></span>
-                    </div>
-                    <div class="hv2-row-list">
-                        <?php foreach ( $calc_rows as $row ) : ?>
-                            <button type="button"
-                                    class="hv2-row"
-                                    data-vs-calc-open
-                                    data-category="<?php echo esc_attr( $row['slug'] ); ?>">
-                                <span class="hv2-row-icon">
-                                    <i class="fa-solid <?php echo esc_attr( $row['icon'] ); ?>"></i>
-                                </span>
-                                <span class="hv2-row-text">
-                                    <span class="hv2-row-name"><?php echo esc_html( $row['name'] ); ?></span>
-                                    <span class="hv2-row-desc"><?php echo esc_html( $row['desc'] ); ?></span>
-                                </span>
-                                <span class="hv2-radio"></span>
-                            </button>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-            </div>
-
-            <div class="hv2-calc-foot">
-                <div class="hv2-summary">
-                    <span class="hv2-summary-label"><?php esc_html_e( 'Estimated total', 'visahouse' ); ?></span>
-                    <span class="hv2-summary-total">
-                        <?php esc_html_e( 'AED 0', 'visahouse' ); ?>
-                        <small><?php esc_html_e( 'excl. VAT', 'visahouse' ); ?></small>
-                    </span>
-                </div>
-                <div class="hv2-calc-actions">
-                    <button type="button" class="hv2-btn hv2-btn-ghost" aria-label="<?php esc_attr_e( 'Reset', 'visahouse' ); ?>">
-                        <i class="fa-solid fa-rotate-left"></i>
-                    </button>
-                    <button type="button" class="hv2-btn hv2-btn-primary" disabled>
-                        <i class="fa-solid fa-calculator"></i>
-                        <span><?php esc_html_e( 'Calculate', 'visahouse' ); ?></span>
-                    </button>
-                </div>
-            </div>
-
+    <!-- Custom trigger content (only renders if trigger page has content) -->
+    <?php if ( $trigger_content ) : ?>
+    <div class="hv2-calc-container">
+        <div class="hv2-calc-wrap">
+            <?php echo $trigger_content; ?>
         </div>
     </div>
+    <?php endif; ?>
 
 </section>
 

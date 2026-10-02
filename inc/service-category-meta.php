@@ -3,13 +3,6 @@
  * Service Category — extra term meta for homepage section headers
  * and the hero v2 slider.
  *
- * Fields:
- *   - vs_cat_section_title  (homepage section headline)
- *   - vs_cat_section_desc   (homepage section description)
- *   - vs_cat_section_order  (homepage + hero ordering)
- *   - vs_cat_slide_icon     (FontAwesome icon for hero slider + calc card)
- *   - vs_cat_slide_image    (hero slider background image URL)
- *
  * @package VisaHouse
  */
 
@@ -25,27 +18,26 @@ function vs_service_category_add_fields() {
     <div class="form-field">
         <label for="vs_cat_section_title"><?php esc_html_e( 'Section title', 'visahouse' ); ?></label>
         <input type="text" name="vs_cat_section_title" id="vs_cat_section_title" value="">
-        <p><?php esc_html_e( 'Big headline for this category on the homepage. HTML allowed (e.g. <em>needs</em> for accent).', 'visahouse' ); ?></p>
+        <p><?php esc_html_e( 'Big headline for this category on the homepage. HTML allowed.', 'visahouse' ); ?></p>
     </div>
     <div class="form-field">
         <label for="vs_cat_section_desc"><?php esc_html_e( 'Section description', 'visahouse' ); ?></label>
         <textarea name="vs_cat_section_desc" id="vs_cat_section_desc" rows="3"></textarea>
-        <p><?php esc_html_e( 'Short sentence under the title. Also used as the hero slider description and calculator row subtext.', 'visahouse' ); ?></p>
     </div>
     <div class="form-field">
         <label for="vs_cat_section_order"><?php esc_html_e( 'Section order', 'visahouse' ); ?></label>
         <input type="number" name="vs_cat_section_order" id="vs_cat_section_order" value="0" min="0" step="1">
-        <p><?php esc_html_e( 'Lower numbers appear first on the homepage and in the hero slider.', 'visahouse' ); ?></p>
     </div>
     <div class="form-field">
         <label for="vs_cat_slide_icon"><?php esc_html_e( 'Slider icon (FA class)', 'visahouse' ); ?></label>
         <input type="text" name="vs_cat_slide_icon" id="vs_cat_slide_icon" value="" placeholder="fa-people-roof">
-        <p><?php esc_html_e( 'FontAwesome 6 Solid class, e.g. fa-people-roof, fa-crown, fa-building. Shown in the hero slider and calculator card.', 'visahouse' ); ?></p>
     </div>
-    <div class="form-field">
+    <div class="form-field vs-media-wrap">
         <label for="vs_cat_slide_image"><?php esc_html_e( 'Slider background image URL', 'visahouse' ); ?></label>
-        <input type="url" name="vs_cat_slide_image" id="vs_cat_slide_image" value="" placeholder="https://...">
-        <p><?php esc_html_e( 'Optional. If empty, a default Unsplash image is used for that slide.', 'visahouse' ); ?></p>
+        <input type="hidden" name="vs_cat_slide_image" id="vs_cat_slide_image" value="">
+        <button class="button vs-media-pick">Choose image</button>
+        <button class="button vs-media-clear">Remove</button>
+        <div class="vs-media-preview" style="margin-top: 10px;"></div>
     </div>
     <?php
 }
@@ -63,37 +55,31 @@ function vs_service_category_edit_fields( $term ) {
     ?>
     <tr class="form-field">
         <th scope="row"><label for="vs_cat_section_title"><?php esc_html_e( 'Section title', 'visahouse' ); ?></label></th>
-        <td>
-            <input type="text" name="vs_cat_section_title" id="vs_cat_section_title" value="<?php echo esc_attr( $title ); ?>">
-            <p class="description"><?php esc_html_e( 'Big headline for this category on the homepage. HTML allowed (e.g. <em>needs</em> for accent).', 'visahouse' ); ?></p>
-        </td>
+        <td><input type="text" name="vs_cat_section_title" id="vs_cat_section_title" value="<?php echo esc_attr( $title ); ?>"></td>
     </tr>
     <tr class="form-field">
         <th scope="row"><label for="vs_cat_section_desc"><?php esc_html_e( 'Section description', 'visahouse' ); ?></label></th>
-        <td>
-            <textarea name="vs_cat_section_desc" id="vs_cat_section_desc" rows="3" style="width:100%;max-width:520px;"><?php echo esc_textarea( $desc ); ?></textarea>
-            <p class="description"><?php esc_html_e( 'Also used as the hero slider description and calculator row subtext.', 'visahouse' ); ?></p>
-        </td>
+        <td><textarea name="vs_cat_section_desc" id="vs_cat_section_desc" rows="3" style="width:100%;max-width:520px;"><?php echo esc_textarea( $desc ); ?></textarea></td>
     </tr>
     <tr class="form-field">
         <th scope="row"><label for="vs_cat_section_order"><?php esc_html_e( 'Section order', 'visahouse' ); ?></label></th>
-        <td>
-            <input type="number" name="vs_cat_section_order" id="vs_cat_section_order" value="<?php echo esc_attr( $order ); ?>" min="0" step="1">
-            <p class="description"><?php esc_html_e( 'Lower numbers appear first on the homepage and in the hero slider.', 'visahouse' ); ?></p>
-        </td>
+        <td><input type="number" name="vs_cat_section_order" id="vs_cat_section_order" value="<?php echo esc_attr( $order ); ?>" min="0" step="1"></td>
     </tr>
     <tr class="form-field">
         <th scope="row"><label for="vs_cat_slide_icon"><?php esc_html_e( 'Slider icon (FA class)', 'visahouse' ); ?></label></th>
-        <td>
-            <input type="text" name="vs_cat_slide_icon" id="vs_cat_slide_icon" value="<?php echo esc_attr( $icon ); ?>" placeholder="fa-people-roof" style="width:100%;max-width:520px;">
-            <p class="description"><?php esc_html_e( 'FontAwesome 6 Solid class, e.g. fa-people-roof, fa-crown, fa-building. Shown in the hero slider and calculator card.', 'visahouse' ); ?></p>
-        </td>
+        <td><input type="text" name="vs_cat_slide_icon" id="vs_cat_slide_icon" value="<?php echo esc_attr( $icon ); ?>" placeholder="fa-people-roof" style="width:100%;max-width:520px;"></td>
     </tr>
     <tr class="form-field">
         <th scope="row"><label for="vs_cat_slide_image"><?php esc_html_e( 'Slider background image URL', 'visahouse' ); ?></label></th>
-        <td>
-            <input type="url" name="vs_cat_slide_image" id="vs_cat_slide_image" value="<?php echo esc_attr( $image ); ?>" placeholder="https://..." style="width:100%;max-width:520px;">
-            <p class="description"><?php esc_html_e( 'Optional. If empty, a default Unsplash image is used for that slide.', 'visahouse' ); ?></p>
+        <td class="vs-media-wrap">
+            <input type="hidden" name="vs_cat_slide_image" id="vs_cat_slide_image" value="<?php echo esc_attr( $image ); ?>">
+            <button class="button vs-media-pick">Choose image</button>
+            <button class="button vs-media-clear">Remove</button>
+            <div class="vs-media-preview" style="margin-top: 10px;">
+                <?php if ( $image ) : ?>
+                    <img src="<?php echo esc_url( $image ); ?>" style="max-width:80px;border-radius:6px;display:block;">
+                <?php endif; ?>
+            </div>
         </td>
     </tr>
     <?php
@@ -122,3 +108,36 @@ function vs_service_category_save_fields( $term_id ) {
 }
 add_action( 'created_service_category', 'vs_service_category_save_fields' );
 add_action( 'edited_service_category',  'vs_service_category_save_fields' );
+
+/* ============================================================
+   MEDIA SCRIPTS
+   ============================================================ */
+function vs_service_category_media_scripts( $hook ) {
+    $screen = get_current_screen();
+    if ( ! $screen || $screen->taxonomy !== 'service_category' ) {
+        return;
+    }
+    wp_enqueue_media();
+    wp_add_inline_script( 'media-editor', "
+        jQuery(document).on('click', '.vs-media-pick', function(e){
+            e.preventDefault();
+            var \$wrap = jQuery(this).closest('.vs-media-wrap');
+            var frame = wp.media({ title: 'Select image', multiple: false, library: { type: 'image' } });
+            frame.on('select', function(){
+                var att = frame.state().get('selection').first().toJSON();
+                \$wrap.find('input[type=hidden]').val(att.url);
+                \$wrap.find('.vs-media-preview').html(
+                    '<img src=\"' + att.url + '\" style=\"max-width:80px;border-radius:6px;display:block;\">'
+                );
+            });
+            frame.open();
+        });
+        jQuery(document).on('click', '.vs-media-clear', function(e){
+            e.preventDefault();
+            var \$wrap = jQuery(this).closest('.vs-media-wrap');
+            \$wrap.find('input[type=hidden]').val('');
+            \$wrap.find('.vs-media-preview').html('');
+        });
+    " );
+}
+add_action( 'admin_enqueue_scripts', 'vs_service_category_media_scripts' );
