@@ -146,20 +146,13 @@
                 <?php endif; ?>
             <?php endif; ?>
 
-            <!-- Calculator -->
-            <button type="button" onclick="vsOpenCalculator()" class="vs-btn vs-btn-outline vs-hide-mobile">
-                <i class="fa-solid fa-calculator"></i>
-                <?php esc_html_e( 'Visa Calculator', 'visahouse' ); ?>
-            </button>
-
             <!-- WhatsApp -->
             <button type="button" onclick="vsShowWhatsAppModal()" class="vs-btn vs-btn-wa vs-hide-mobile" aria-label="<?php esc_attr_e( 'Chat on WhatsApp', 'visahouse' ); ?>">
                 <i class="fa-brands fa-whatsapp"></i>
             </button>
 
-            <!-- Theme Toggle -->
-            <button type="button" onclick="vsToggleTheme()" class="vs-icon-btn vs-hide-mobile" aria-label="<?php esc_attr_e( 'Toggle dark mode', 'visahouse' ); ?>">
-                <i class="fa-solid fa-moon"></i>
+            <button type="button" onclick="vsOpenCalculator();vsCloseMobileDrawer();" class="vs-btn vs-btn-outline">
+                <i class="fa-solid fa-calculator"></i>                   
             </button>
 
             <!-- Mobile toggle -->
@@ -242,10 +235,6 @@
         </div>
 
         <div class="vs-mobile-drawer-foot">
-            <button type="button" onclick="vsOpenCalculator();vsCloseMobileDrawer();" class="vs-btn vs-btn-primary" style="width:100%;height:50px;">
-                <i class="fa-solid fa-calculator"></i>
-                <?php esc_html_e( 'Visa Calculator', 'visahouse' ); ?>
-            </button>
             <button type="button" onclick="vsShowWhatsAppModal();vsCloseMobileDrawer();" class="vs-btn vs-btn-wa" style="width:100%;height:50px;">
                 <i class="fa-brands fa-whatsapp"></i>
                 <?php esc_html_e( 'Chat on WhatsApp', 'visahouse' ); ?>
@@ -255,5 +244,8 @@
 </div>
 
 <?php do_action( 'vs_after_header' ); ?>
+
+<?php /* [vfc_trigger] — rendered globally so the calculator modal is available on every page */ ?>
+<?php echo do_shortcode( '[vfc_trigger]' ); ?>
 
 <main id="vs-main" class="vs-main">

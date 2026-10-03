@@ -9,7 +9,206 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+
+/**
+ * Custom range-slider control for the Customizer.
+ * Layout: label / description / [————slider————] [48] px
+ */
+if ( class_exists( 'WP_Customize_Control' ) ) :
+class VS_Range_Control extends WP_Customize_Control {
+
+    public $type = 'vs-range';
+
+    public function enqueue() {
+        add_action( 'customize_controls_print_styles', function() {
+            echo '<style>
+                /* Layout row */
+                .customize-control-vs-range .vs-range-row {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    margin-top: 8px;
+                    width: 100%;
+                }
+
+                /* Slider — the star of the show */
+                .customize-control-vs-range .vs-range-row input[type="range"] {
+                    flex: 1 1 auto !important;
+                    width: auto !important;
+                    min-width: 0 !important;
+                    max-width: none !important;
+                    height: 4px !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    accent-color: #C2410C;
+                    cursor: pointer;
+                    background: transparent;
+                    -webkit-appearance: auto !important;
+                    appearance: auto !important;
+                }
+
+                /* Number input — small, fixed */
+                .customize-control-vs-range .vs-range-row input[type="number"] {
+                    flex: 0 0 52px !important;
+                    width: 52px !important;
+                    min-width: 52px !important;
+                    max-width: 52px !important;
+                    height: 30px !important;
+                    padding: 2px 4px !important;
+                    border: 1px solid #c3c4c7 !important;
+                    border-radius: 4px !important;
+                    font-size: 12px !important;
+                    line-height: 1.2 !important;
+                    text-align: center;
+                    background: #fff !important;
+                    color: #1e1e1e !important;
+                    box-shadow: none !important;
+                    margin: 0 !important;
+                    -moz-appearance: textfield;
+                }
+
+                /* Hide the number spinners (they push content around) */
+                .customize-control-vs-range .vs-range-row input[type="number"]::-webkit-outer-spin-button,
+                .customize-control-vs-range .vs-range-row input[type="number"]::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+
+                /* The "px" unit */
+                .customize-control-vs-range .vs-range-row .vs-ru {
+                    flex: 0 0 auto;
+                    font-size: 11px;
+                    color: #888;
+                    line-height: 1;
+                }
+            </style>';
+        }, 2 );
+    }
+
+    public function render_content() {
+        $attrs = $this->input_attrs;
+        $min   = isset( $attrs['min'] )  ? (int) $attrs['min']  : 0;
+        $max   = isset( $attrs['max'] )  ? (int) $attrs['max']  : 100;
+        $step  = isset( $attrs['step'] ) ? (int) $attrs['step'] : 1;
+        $val   = (int) $this->value();
+        $id    = 'vs-range-' . esc_attr( $this->id );
+        $link  = $this->get_link();
+        ?>
+        <?php if ( $this->label ) : ?>
+            <label for="<?php echo $id; ?>"><span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span></label>
+        <?php endif; ?>
+        <?php if ( $this->description ) : ?>
+            <span class="description customize-control-description"><?php echo esc_html( $this->description ); ?></span>
+        <?php endif; ?>
+        <div class="vs-range-row">
+            <input type="range"
+                   id="<?php echo $id; ?>"
+                   min="<?php echo $min; ?>" max="<?php echo $max; ?>" step="<?php echo $step; ?>"
+                   value="<?php echo esc_attr( $val ); ?>"
+                   <?php echo $link; ?>
+                   oninput="document.getElementById('<?php echo $id; ?>-num').value=this.value">
+            <input type="number"
+                   id="<?php echo $id; ?>-num"
+                   min="<?php echo $min; ?>" max="<?php echo $max; ?>" step="<?php echo $step; ?>"
+                   value="<?php echo esc_attr( $val ); ?>"
+                   oninput="var r=document.getElementById('<?php echo $id; ?>');r.value=this.value;r.dispatchEvent(new Event('input'));">
+            <span class="vs-ru">px</span>
+        </div>
+        <?php
+    }
+}
+endif; // class_exists WP_Customize_Control
+
+
+/**
+ * Color preset swatch picker — shows colored rectangles instead of radio buttons.
+ */
+if ( class_exists( 'WP_Customize_Control' ) ) :
+class VS_Color_Preset_Control extends WP_Customize_Control {
+
+    public $type    = 'vs-color-preset';
+    public $presets = array();
+
+    public function enqueue() {
+        add_action( 'customize_controls_print_styles', function() {
+            echo '<style>
+                .vs-swatch-grid {
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: 8px;
+                    margin-top: 10px;
+                }
+                .vs-swatch {
+                    position: relative;
+                    cursor: pointer;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    border: 2px solid transparent;
+                    transition: border-color .15s, transform .15s;
+                    aspect-ratio: 1;
+                }
+                .vs-swatch:hover { transform: scale(1.06); }
+                .vs-swatch.active { border-color: #fff; box-shadow: 0 0 0 2px #C2410C; }
+                .vs-swatch-inner {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                }
+                .vs-swatch-top { flex: 2; }
+                .vs-swatch-bot { flex: 1; }
+                .vs-swatch-name {
+                    position: absolute;
+                    bottom: 3px;
+                    left: 0; right: 0;
+                    text-align: center;
+                    font-size: 9px;
+                    font-weight: 600;
+                    color: rgba(255,255,255,.9);
+                    text-shadow: 0 1px 2px rgba(0,0,0,.5);
+                    letter-spacing: .04em;
+                    text-transform: uppercase;
+                }
+                .vs-swatch input[type=radio] { display:none !important; }
+            </style>';
+        }, 2 );
+    }
+
+    public function render_content() {
+        if ( $this->label ) :
+            echo '<span class="customize-control-title">' . esc_html( $this->label ) . '</span>';
+        endif;
+        if ( $this->description ) :
+            echo '<span class="description customize-control-description">' . esc_html( $this->description ) . '</span>';
+        endif;
+
+        $current = $this->value();
+        echo '<div class="vs-swatch-grid">';
+        foreach ( $this->presets as $key => $p ) :
+            $active = ( $current === $key ) ? ' active' : '';
+            ?>
+            <label class="vs-swatch<?php echo $active; ?>" title="<?php echo esc_attr( $p['name'] ); ?>">
+                <input type="radio"
+                    <?php $this->link(); ?>
+                    value="<?php echo esc_attr( $key ); ?>"
+                    <?php checked( $current, $key ); ?>
+                    onchange="this.closest('.vs-swatch-grid').querySelectorAll('.vs-swatch').forEach(function(s){s.classList.remove('active')});this.closest('.vs-swatch').classList.add('active');">
+                <span class="vs-swatch-inner">
+                    <span class="vs-swatch-top" style="background:<?php echo esc_attr( $p['primary'] ); ?>"></span>
+                    <span class="vs-swatch-bot" style="background:<?php echo esc_attr( $p['accent'] ); ?>"></span>
+                </span>
+                <span class="vs-swatch-name"><?php echo esc_html( $p['name'] ); ?></span>
+            </label>
+            <?php
+        endforeach;
+        echo '</div>';
+    }
+}
+endif; // class_exists WP_Customize_Control
+
+
 function vs_customize_register( $wp_customize ) {
+
 
     /* ============================================================
        GLOBAL
@@ -38,161 +237,37 @@ function vs_customize_register( $wp_customize ) {
         ) );
     }
 
-    /* ============================================================
-       HERO
-       ============================================================ */
-    $wp_customize->add_section( 'vs_hero', array(
-        'title'    => __( 'Homepage — Hero', 'visahouse' ),
-        'priority' => 31,
-    ) );
-
-    $hero_fields = array(
-        'vs_hero_badge'  => array( 'label' => 'Badge text',  'default' => 'DET-Licensed Provider', 'html' => false ),
-        'vs_hero_title'  => array( 'label' => 'Title (HTML allowed, use <em>)', 'default' => "Your family's UAE visa, <em>done for you</em>.", 'html' => true ),
-        'vs_hero_sub'    => array( 'label' => 'Subtitle',    'default' => 'Sponsor your spouse, children, or parents. Exact government fees in under 30 seconds — then we handle the whole application from your phone.', 'html' => false ),
-        'vs_hero_foot'   => array( 'label' => 'Footline',    'default' => 'Free calculator · Itemized government fees · No signup', 'html' => false ),
-        'vs_trust_label' => array( 'label' => 'Trust bar label', 'default' => 'Trusted by thousands', 'html' => false ),
-    );
-    foreach ( $hero_fields as $key => $cfg ) {
-        $wp_customize->add_setting( $key, array(
-            'default'           => $cfg['default'],
-            'sanitize_callback' => $cfg['html'] ? 'wp_kses_post' : 'sanitize_text_field',
-        ) );
-        $wp_customize->add_control( $key, array(
-            'label'   => $cfg['label'],
-            'section' => 'vs_hero',
-            'type'    => 'text',
-        ) );
-    }
 
     /* ============================================================
-       CTA
+       LOGO SIZE — Site Identity (title_tagline)
        ============================================================ */
-    $wp_customize->add_section( 'vs_cta', array(
-        'title'    => __( 'Homepage — Final CTA', 'visahouse' ),
-        'priority' => 33,
-    ) );
 
-    $wp_customize->add_setting( 'vs_cta_title', array(
-        'default'           => 'Ready to bring your family together?',
-        'sanitize_callback' => 'sanitize_text_field',
+    // Desktop logo height
+    $wp_customize->add_setting( 'vs_logo_height', array(
+        'default'           => 48,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'postMessage',
     ) );
-    $wp_customize->add_control( 'vs_cta_title', array(
-        'label'   => __( 'CTA title', 'visahouse' ),
-        'section' => 'vs_cta',
-        'type'    => 'text',
+    $wp_customize->add_control( new VS_Range_Control( $wp_customize, 'vs_logo_height', array(
+        'label'       => __( 'Logo height — Desktop (px)', 'visahouse' ),
+        'description' => __( 'Max-height of the header logo image on desktop.', 'visahouse' ),
+        'section'     => 'title_tagline',
+        'input_attrs' => array( 'min' => 20, 'max' => 120, 'step' => 1 ),
+    ) ) );
+
+    // Mobile logo height
+    $wp_customize->add_setting( 'vs_logo_height_mobile', array(
+        'default'           => 36,
+        'sanitize_callback' => 'absint',
+        'transport'         => 'postMessage',
     ) );
+    $wp_customize->add_control( new VS_Range_Control( $wp_customize, 'vs_logo_height_mobile', array(
+        'label'       => __( 'Logo height — Mobile (px)', 'visahouse' ),
+        'description' => __( 'Max-height of the header logo on mobile screens (≤768px).', 'visahouse' ),
+        'section'     => 'title_tagline',
+        'input_attrs' => array( 'min' => 16, 'max' => 80, 'step' => 1 ),
+    ) ) );
 
-    $wp_customize->add_setting( 'vs_cta_text', array(
-        'default'           => 'Calculate your exact government fees, or send us a message — a family visa specialist replies on WhatsApp within minutes.',
-        'sanitize_callback' => 'sanitize_textarea_field',
-    ) );
-    $wp_customize->add_control( 'vs_cta_text', array(
-        'label'   => __( 'CTA text', 'visahouse' ),
-        'section' => 'vs_cta',
-        'type'    => 'textarea',
-    ) );
-
-    /* ============================================================
-       STEPS (4 fixed steps)
-       ============================================================ */
-    $wp_customize->add_section( 'vs_steps', array(
-        'title'    => __( 'Homepage — Steps', 'visahouse' ),
-        'priority' => 34,
-    ) );
-
-    $step_defaults = array(
-        1 => array(
-            'badge'      => 'Step 01',
-            'number'     => '1',
-            'title'      => 'Check Cost & Eligibility',
-            'text'       => 'Use our free calculator to see exact government fees for your family member. No signup, no hidden charges.',
-            'visual'     => 'Instant estimate',
-            'visual_sub' => 'in under 30 seconds',
-        ),
-        2 => array(
-            'badge'      => 'Step 02',
-            'number'     => '2',
-            'title'      => 'Share Documents',
-            'text'       => 'Send photos of passports and certificates on WhatsApp. We verify everything to GDRFA & ICP standards.',
-            'visual'     => '100% mobile',
-            'visual_sub' => 'no office visit needed',
-        ),
-        3 => array(
-            'badge'      => 'Step 03',
-            'number'     => '3',
-            'title'      => 'We File & Follow Up',
-            'text'       => 'Entry permit, status change, and visa stamping — submitted and tracked by our team with updates at every stage.',
-            'visual'     => '5–10 working days',
-            'visual_sub' => 'for a new visa',
-        ),
-        4 => array(
-            'badge'      => 'Step 04',
-            'number'     => '4',
-            'title'      => 'Medical & Emirates ID',
-            'text'       => 'We book the medical fitness test and biometrics appointment. Emirates ID delivered to your door.',
-            'visual'     => 'Door delivery',
-            'visual_sub' => 'of Emirates ID',
-        ),
-    );
-
-    for ( $i = 1; $i <= 4; $i++ ) {
-        $d = $step_defaults[ $i ];
-        $fields = array(
-            "vs_step_{$i}_badge"      => array( 'label' => "Step {$i} — Badge",           'default' => $d['badge'] ),
-            "vs_step_{$i}_number"     => array( 'label' => "Step {$i} — Big number",      'default' => $d['number'] ),
-            "vs_step_{$i}_title"      => array( 'label' => "Step {$i} — Title",           'default' => $d['title'] ),
-            "vs_step_{$i}_visual"     => array( 'label' => "Step {$i} — Visual bold line",'default' => $d['visual'] ),
-            "vs_step_{$i}_visual_sub" => array( 'label' => "Step {$i} — Visual sub line", 'default' => $d['visual_sub'] ),
-        );
-        foreach ( $fields as $key => $cfg ) {
-            $wp_customize->add_setting( $key, array(
-                'default'           => $cfg['default'],
-                'sanitize_callback' => 'sanitize_text_field',
-            ) );
-            $wp_customize->add_control( $key, array(
-                'label'   => $cfg['label'],
-                'section' => 'vs_steps',
-                'type'    => 'text',
-            ) );
-        }
-        $wp_customize->add_setting( "vs_step_{$i}_text", array(
-            'default'           => $d['text'],
-            'sanitize_callback' => 'sanitize_textarea_field',
-        ) );
-        $wp_customize->add_control( "vs_step_{$i}_text", array(
-            'label'   => "Step {$i} — Description",
-            'section' => 'vs_steps',
-            'type'    => 'textarea',
-        ) );
-    }
-
-    /* ============================================================
-       SERVICES MODAL
-       ============================================================ */
-    $wp_customize->add_section( 'vs_modal', array(
-        'title'    => __( 'Services Modal', 'visahouse' ),
-        'priority' => 35,
-    ) );
-
-    $modal_fields = array(
-        'vs_modal_title'      => array( 'label' => 'Modal title',        'default' => 'VisaHouse.ae' ),
-        'vs_modal_subtitle'   => array( 'label' => 'Modal subtitle',     'default' => 'All services in one place' ),
-        'vs_modal_calc_label' => array( 'label' => 'Calculator label',   'default' => 'Visa Calculator' ),
-        'vs_modal_calc_url'   => array( 'label' => 'Calculator URL',     'default' => '#calculator' ),
-        'vs_modal_wa_label'   => array( 'label' => 'WhatsApp label',     'default' => 'WhatsApp' ),
-    );
-    foreach ( $modal_fields as $key => $cfg ) {
-        $wp_customize->add_setting( $key, array(
-            'default'           => $cfg['default'],
-            'sanitize_callback' => 'sanitize_text_field',
-        ) );
-        $wp_customize->add_control( $key, array(
-            'label'   => $cfg['label'],
-            'section' => 'vs_modal',
-            'type'    => 'text',
-        ) );
-    }
 
     /* ============================================================
        TYPOGRAPHY
@@ -207,70 +282,51 @@ function vs_customize_register( $wp_customize ) {
         'Adobe Clean Semi Condensed' => 'Adobe Clean Semi Condensed',
         'Manrope'                    => 'Manrope',
         'system-ui'                  => 'System UI',
-        'custom'                     => 'Custom…',
     );
 
-    // Fonts
-    foreach ( array( 'body', 'heading', 'paragraph', 'link' ) as $type ) {
+    // Font family selects
+    foreach ( array( 'body' => 'Body font', 'heading' => 'Heading font' ) as $type => $label ) {
         $wp_customize->add_setting( "vs_font_{$type}", array(
-            'default' => 'Adobe Clean',
+            'default'           => 'Adobe Clean',
             'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'postMessage',
         ) );
         $wp_customize->add_control( "vs_font_{$type}", array(
-            'label'   => "Font Family: " . ucfirst($type),
+            'label'   => $label,
             'section' => 'vs_typography',
             'type'    => 'select',
             'choices' => $font_choices,
         ) );
-        // Custom Font Input
-        $wp_customize->add_setting( "vs_font_{$type}_custom", array(
-            'default' => '',
-            'sanitize_callback' => 'sanitize_text_field',
-        ) );
-        $wp_customize->add_control( "vs_font_{$type}_custom", array(
-            'label'   => "Custom Font Family (" . ucfirst($type) . ")",
-            'section' => 'vs_typography',
-            'type'    => 'text',
-        ) );
     }
 
-    // Sizes
+    // Font sizes
     $sizes = array(
-        'body' => [16, 16, 22], 'body_mobile' => [15, 14, 20],
-        'h1' => [48, 28, 72], 'h2' => [36, 24, 56], 'h3' => [24, 18, 40], 'h4' => [20, 16, 32],
-        'p' => [16, 14, 22], 'a' => [16, 14, 22]
+        'body'        => array( 'Body size',          16, 12, 24 ),
+        'body_mobile' => array( 'Body size — Mobile', 15, 12, 20 ),
+        'h1'          => array( 'H1 size',            48, 28, 72 ),
+        'h2'          => array( 'H2 size',            36, 24, 56 ),
+        'h3'          => array( 'H3 size',            24, 18, 40 ),
+        'h4'          => array( 'H4 size',            20, 16, 32 ),
     );
     foreach ( $sizes as $key => $cfg ) {
         $wp_customize->add_setting( "vs_font_size_{$key}", array(
-            'default' => $cfg[0],
+            'default'           => $cfg[1],
             'sanitize_callback' => 'absint',
+            'transport'         => 'postMessage',
         ) );
-        $wp_customize->add_control( "vs_font_size_{$key}", array(
-            'label'   => "Font Size: " . strtoupper($key) . " (px)",
-            'section' => 'vs_typography',
-            'type'    => 'number',
-            'input_attrs' => array('min' => $cfg[1], 'max' => $cfg[2], 'step' => 1),
-        ) );
+        $wp_customize->add_control( new VS_Range_Control( $wp_customize, "vs_font_size_{$key}", array(
+            'label'       => $cfg[0] . ' (px)',
+            'section'     => 'vs_typography',
+            'input_attrs' => array( 'min' => $cfg[2], 'max' => $cfg[3], 'step' => 1 ),
+        ) ) );
     }
 
-    // Weights & Line Heights
-    $wp_customize->add_setting( 'vs_weight_body', array( 'default' => '400', 'sanitize_callback' => 'sanitize_text_field' ) );
-    $wp_customize->add_control( 'vs_weight_body', array( 'label' => 'Weight: Body', 'section' => 'vs_typography', 'type' => 'select', 'choices' => array('300'=>'300', '400'=>'400', '500'=>'500', '600'=>'600', '700'=>'700') ) );
-    
-    $wp_customize->add_setting( 'vs_weight_heading', array( 'default' => '700', 'sanitize_callback' => 'sanitize_text_field' ) );
-    $wp_customize->add_control( 'vs_weight_heading', array( 'label' => 'Weight: Heading', 'section' => 'vs_typography', 'type' => 'select', 'choices' => array('400'=>'400', '500'=>'500', '600'=>'600', '700'=>'700', '800'=>'800') ) );
-    
-    $wp_customize->add_setting( 'vs_weight_link', array( 'default' => '600', 'sanitize_callback' => 'sanitize_text_field' ) );
-    $wp_customize->add_control( 'vs_weight_link', array( 'label' => 'Weight: Link', 'section' => 'vs_typography', 'type' => 'select', 'choices' => array('400'=>'400', '500'=>'500', '600'=>'600', '700'=>'700', '800'=>'800') ) );
+    // Weights
+    $wp_customize->add_setting( 'vs_weight_body', array( 'default' => '400', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
+    $wp_customize->add_control( 'vs_weight_body', array( 'label' => 'Body weight', 'section' => 'vs_typography', 'type' => 'select', 'choices' => array('300'=>'300','400'=>'400','500'=>'500','600'=>'600','700'=>'700') ) );
 
-    $wp_customize->add_setting( 'vs_line_height_body', array( 'default' => 1.6, 'sanitize_callback' => 'vs_sanitize_float' ) );
-    $wp_customize->add_control( 'vs_line_height_body', array( 'label' => 'Line Height: Body', 'section' => 'vs_typography', 'type' => 'number', 'input_attrs' => array('min'=>1.0,'max'=>2.0,'step'=>0.05) ) );
-
-    $wp_customize->add_setting( 'vs_line_height_heading', array( 'default' => 1.15, 'sanitize_callback' => 'vs_sanitize_float' ) );
-    $wp_customize->add_control( 'vs_line_height_heading', array( 'label' => 'Line Height: Heading', 'section' => 'vs_typography', 'type' => 'number', 'input_attrs' => array('min'=>1.0,'max'=>2.0,'step'=>0.05) ) );
-
-    $wp_customize->add_setting( 'vs_letter_spacing_heading', array( 'default' => '-.025em', 'sanitize_callback' => 'sanitize_text_field' ) );
-    $wp_customize->add_control( 'vs_letter_spacing_heading', array( 'label' => 'Letter Spacing: Heading', 'section' => 'vs_typography', 'type' => 'text' ) );
+    $wp_customize->add_setting( 'vs_weight_heading', array( 'default' => '700', 'sanitize_callback' => 'sanitize_text_field', 'transport' => 'postMessage' ) );
+    $wp_customize->add_control( 'vs_weight_heading', array( 'label' => 'Heading weight', 'section' => 'vs_typography', 'type' => 'select', 'choices' => array('400'=>'400','500'=>'500','600'=>'600','700'=>'700','800'=>'800') ) );
 
 
     /* ============================================================
@@ -281,73 +337,41 @@ function vs_customize_register( $wp_customize ) {
         'priority' => 41,
     ) );
 
-    $wp_customize->add_setting( 'vs_color_preset', array(
-        'default' => 'brand',
-        'sanitize_callback' => 'sanitize_text_field',
-    ) );
-    $wp_customize->add_control( 'vs_color_preset', array(
-        'label'   => 'Color Preset',
-        'section' => 'vs_colors',
-        'type'    => 'radio',
-        'choices' => array(
-            'brand'  => 'Brand (Default)',
-            'ocean'  => 'Ocean',
-            'forest' => 'Forest',
-            'slate'  => 'Slate',
-            'violet' => 'Violet',
-            'sunset' => 'Sunset',
-            'rose'   => 'Rose',
-            'custom' => 'Custom',
-        ),
-    ) );
-
-    $wp_customize->add_setting( 'vs_color_primary', array( 'default' => '#0A1F3D', 'sanitize_callback' => 'sanitize_hex_color' ) );
-    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'vs_color_primary', array( 'label' => 'Primary Color', 'section' => 'vs_colors' ) ) );
-
-    $wp_customize->add_setting( 'vs_color_accent', array( 'default' => '#C2410C', 'sanitize_callback' => 'sanitize_hex_color' ) );
-    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'vs_color_accent', array( 'label' => 'Accent Color', 'section' => 'vs_colors' ) ) );
-
-    $wp_customize->add_setting( 'vs_color_accent_hover', array( 'default' => '#9A3309', 'sanitize_callback' => 'sanitize_hex_color' ) );
-    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'vs_color_accent_hover', array( 'label' => 'Accent Hover Color', 'section' => 'vs_colors' ) ) );
-
-    /* ============================================================
-       APPEARANCE
-       ============================================================ */
-    $wp_customize->add_section( 'vs_appearance', array(
-        'title'    => __( 'VisaHouse — Appearance', 'visahouse' ),
-        'priority' => 42,
-    ) );
-
-    $wp_customize->add_setting( 'vs_color_mode', array(
-        'default' => 'light',
-        'sanitize_callback' => 'sanitize_text_field',
-    ) );
-    $wp_customize->add_control( 'vs_color_mode', array(
-        'label'   => 'Color Mode',
-        'section' => 'vs_appearance',
-        'type'    => 'radio',
-        'choices' => array(
-            'light' => 'Light (Default)',
-            'dark'  => 'Dark',
-            'auto'  => 'Auto (Follow OS)',
-        ),
-    ) );
-
-    $dark_colors = array(
-        'vs_dark_surface'   => '#0B1220',
-        'vs_dark_surface_2' => '#131C2E',
-        'vs_dark_line'      => '#1F2A44',
-        'vs_dark_ink'       => '#E2E8F0',
-        'vs_dark_ink_2'     => '#94A3B8',
-        'vs_dark_paper'     => '#050A14',
+    $presets = array(
+        'brand'  => array( 'name' => 'Brand',   'primary' => '#0A1F3D', 'accent' => '#C2410C', 'hover' => '#9A3309' ),
+        'ocean'  => array( 'name' => 'Ocean',   'primary' => '#0C2340', 'accent' => '#0284C7', 'hover' => '#0369A1' ),
+        'forest' => array( 'name' => 'Forest',  'primary' => '#14342B', 'accent' => '#16A34A', 'hover' => '#15803D' ),
+        'slate'  => array( 'name' => 'Slate',   'primary' => '#1E293B', 'accent' => '#475569', 'hover' => '#334155' ),
+        'violet' => array( 'name' => 'Violet',  'primary' => '#1E0A3D', 'accent' => '#7C3AED', 'hover' => '#6D28D9' ),
+        'sunset' => array( 'name' => 'Sunset',  'primary' => '#3D0A1F', 'accent' => '#E11D48', 'hover' => '#BE123C' ),
+        'rose'   => array( 'name' => 'Rose',    'primary' => '#2D0A1F', 'accent' => '#EC4899', 'hover' => '#DB2777' ),
+        'custom' => array( 'name' => 'Custom',  'primary' => '#333333', 'accent' => '#666666', 'hover' => '#444444' ),
     );
-    foreach ( $dark_colors as $key => $default ) {
-        $wp_customize->add_setting( $key, array( 'default' => $default, 'sanitize_callback' => 'sanitize_hex_color' ) );
-        $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $key, array( 'label' => 'Dark Mode: ' . str_replace('Vs Dark ', '', ucwords(str_replace('_', ' ', $key))), 'section' => 'vs_appearance' ) ) );
-    }
+
+    $wp_customize->add_setting( 'vs_color_preset', array(
+        'default'           => 'brand',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'postMessage',
+    ) );
+    $wp_customize->add_control( new VS_Color_Preset_Control( $wp_customize, 'vs_color_preset', array(
+        'label'   => __( 'Color Palette', 'visahouse' ),
+        'section' => 'vs_colors',
+        'presets' => $presets,
+    ) ) );
+
+    $wp_customize->add_setting( 'vs_color_primary', array( 'default' => '#0A1F3D', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'vs_color_primary', array( 'label' => 'Primary Color (custom override)', 'section' => 'vs_colors' ) ) );
+
+    $wp_customize->add_setting( 'vs_color_accent', array( 'default' => '#C2410C', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'vs_color_accent', array( 'label' => 'Accent Color (custom override)', 'section' => 'vs_colors' ) ) );
+
+    $wp_customize->add_setting( 'vs_color_accent_hover', array( 'default' => '#9A3309', 'sanitize_callback' => 'sanitize_hex_color', 'transport' => 'postMessage' ) );
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'vs_color_accent_hover', array( 'label' => 'Accent Hover (custom override)', 'section' => 'vs_colors' ) ) );
+
 
 }
 add_action( 'customize_register', 'vs_customize_register' );
+
 
 /**
  * Custom sanitizer — allows text or email.
@@ -362,3 +386,26 @@ function vs_sanitize_text_or_email( $value ) {
 function vs_sanitize_float( $value ) {
     return (float) $value;
 }
+
+/**
+ * Enqueue the live-preview script inside the Customizer preview iframe.
+ * Only runs when the Customizer is active (customize_preview_init).
+ */
+function vs_customize_preview_scripts() {
+    wp_enqueue_script(
+        'vs-customize-preview',
+        get_template_directory_uri() . '/assets/js/customize-preview.js',
+        array( 'customize-preview', 'jquery' ),
+        VS_VERSION,
+        true
+    );
+
+    wp_localize_script( 'vs-customize-preview', 'vsLogoPreview', array(
+        'desktop' => (int) get_theme_mod( 'vs_logo_height',        48 ),
+        'mobile'  => (int) get_theme_mod( 'vs_logo_height_mobile', 36 ),
+        'primary' => get_theme_mod( 'vs_color_primary',      '#0A1F3D' ),
+        'accent'  => get_theme_mod( 'vs_color_accent',       '#C2410C' ),
+        'hover'   => get_theme_mod( 'vs_color_accent_hover', '#9A3309' ),
+    ) );
+}
+add_action( 'customize_preview_init', 'vs_customize_preview_scripts' );

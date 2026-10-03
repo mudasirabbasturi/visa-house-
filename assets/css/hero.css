@@ -1,0 +1,1697 @@
+/* ==========================================================================
+   VisaHouse — hero.css
+   Homepage hero: single-column slider + glow waves + floating calc / FAB.
+   Scope: .hv3-*
+   Author: Mudasir Abbas
+   ========================================================================== */
+
+/* ==========================================================================
+   TUNABLE VARIABLES — change these to resize the hero
+   ========================================================================== */
+:root {
+    /* Outer hero wrapper — total vertical footprint of the section */
+    --hv3-hero-min-h: 90vh;
+
+    /* Inner slider panel — leave as auto to fill the remaining space,
+       or set an explicit value like 520px to force it */
+    --hv3-slider-min-h: auto;
+
+    /* Outer padding around the slider inside the hero */
+    --hv3-hero-padding: 40px 20px;
+}
+
+
+/* ==========================================================================
+   HERO WRAPPER
+   ========================================================================== */
+.hv3-hero {
+    position: relative;
+    width: 100%;
+    min-height: var(--hv3-hero-min-h, 75vh);
+    background:
+        radial-gradient(70% 60% at 92% 8%, rgba(241, 36, 58, .08) 0%, transparent 55%),
+        radial-gradient(50% 50% at 8% 92%, rgba(10, 31, 61, .05) 0%, transparent 55%),
+        linear-gradient(180deg, #FFFFFF 0%, #FAFBFC 100%);
+    overflow: hidden;
+    padding: var(--hv3-hero-padding, 40px);
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    box-sizing: border-box;
+    isolation: isolate;
+}
+
+.hv3-hero *,
+.hv3-hero *::before,
+.hv3-hero *::after {
+    box-sizing: border-box;
+}
+
+.hv3-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(10, 31, 61, .05) 1px, transparent 0);
+    background-size: 32px 32px;
+    -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 45%, black 15%, transparent 80%);
+    mask-image: radial-gradient(ellipse 85% 65% at 50% 45%, black 15%, transparent 80%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hv3-hero::after {
+    content: "";
+    position: absolute;
+    top: -180px;
+    left: -180px;
+    width: 620px;
+    height: 620px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(241, 36, 58, .10) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: hv3Orb1 22s ease-in-out infinite;
+}
+
+.hv3-hero .hv3-orb-b {
+    position: absolute;
+    bottom: -220px;
+    right: -160px;
+    width: 580px;
+    height: 580px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(10, 31, 61, .07) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: hv3Orb2 26s ease-in-out infinite;
+}
+
+@keyframes hv3Orb1 {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(40px, 40px) scale(1.08);
+    }
+}
+
+@keyframes hv3Orb2 {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(-30px, -30px) scale(1.06);
+    }
+}
+
+
+/* ==========================================================================
+   STAGE
+   ========================================================================== */
+.hv3-stage {
+    position: relative;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+
+
+/* ==========================================================================
+   SLIDER
+   ========================================================================== */
+.hv3-slider {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    min-height: var(--hv3-slider-min-h, auto);
+    border-radius: 24px;
+    overflow: hidden;
+    background: linear-gradient(155deg, #FFFFFF 0%, #FBFCFD 50%, #F8FAFC 100%);
+    border: 1px solid #E2E8F0;
+    box-shadow:
+        0 40px 80px -24px rgba(10, 31, 61, .18),
+        0 16px 32px -12px rgba(10, 31, 61, .10),
+        inset 0 1px 0 rgba(255, 255, 255, .8);
+}
+
+.hv3-slider::before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    right: -120px;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(241, 36, 58, .12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.hv3-track {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+/* ==========================================================================
+   SLIDE
+   ========================================================================== */
+.hv3-slide {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    background: linear-gradient(155deg, #FFFFFF 0%, #FBFCFD 50%, #F8FAFC 100%);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    overflow: hidden;
+}
+
+.hv3-slide.is-active {
+    pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+}
+
+.hv3-slide.is-entering {
+    animation: hv3SlideIn .9s cubic-bezier(.65, 0, .35, 1) forwards;
+}
+
+.hv3-slide.is-leaving {
+    animation: hv3SlideOut .85s cubic-bezier(.65, 0, .35, 1) forwards;
+}
+
+@keyframes hv3SlideIn {
+    0% {
+        transform: translateY(60px) scale(.985);
+        opacity: 0;
+    }
+
+    45% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes hv3SlideOut {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-60px) scale(.985);
+        opacity: 0;
+    }
+}
+
+.hv3-slide.dir-next.is-entering {
+    animation-name: hv3SlideInFromBottom;
+}
+
+.hv3-slide.dir-next.is-leaving {
+    animation-name: hv3SlideOutToTop;
+}
+
+.hv3-slide.dir-prev.is-entering {
+    animation-name: hv3SlideInFromTop;
+}
+
+.hv3-slide.dir-prev.is-leaving {
+    animation-name: hv3SlideOutToBottom;
+}
+
+@keyframes hv3SlideInFromBottom {
+    0% {
+        transform: translateY(60px) scale(.985);
+        opacity: 0;
+    }
+
+    45% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes hv3SlideOutToTop {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-60px) scale(.985);
+        opacity: 0;
+    }
+}
+
+@keyframes hv3SlideInFromTop {
+    0% {
+        transform: translateY(-60px) scale(.985);
+        opacity: 0;
+    }
+
+    45% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes hv3SlideOutToBottom {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(60px) scale(.985);
+        opacity: 0;
+    }
+}
+
+
+/* ==========================================================================
+   GLOW WAVES
+   ========================================================================== */
+.hv3-graphics {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(105deg,
+            rgba(0, 0, 0, .05) 0%,
+            rgba(0, 0, 0, .30) 40%,
+            rgba(0, 0, 0, .85) 70%,
+            black 100%);
+    mask-image: linear-gradient(105deg,
+            rgba(0, 0, 0, .05) 0%,
+            rgba(0, 0, 0, .30) 40%,
+            rgba(0, 0, 0, .85) 70%,
+            black 100%);
+}
+
+.hv3-graphics::before {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    background:
+        radial-gradient(ellipse 55% 40% at 85% 15%, rgba(241, 36, 58, .10) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 45% at 15% 85%, rgba(10, 31, 61, .06) 0%, transparent 65%);
+    animation: hv3Wash 18s ease-in-out infinite;
+}
+
+@keyframes hv3Wash {
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    50% {
+        transform: translate(-30px, -20px) rotate(2deg);
+    }
+}
+
+.hv3-wave {
+    position: absolute;
+    left: -15%;
+    width: 160%;
+    height: auto;
+    overflow: visible;
+    will-change: transform, opacity;
+    pointer-events: none;
+}
+
+.hv3-wave path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 6px currentColor);
+    -webkit-filter: drop-shadow(0 0 6px currentColor);
+}
+
+.hv3-wave.w1 {
+    bottom: -8%;
+    color: rgba(241, 36, 58, .45);
+    animation: hv3Wave1 22s linear infinite;
+    opacity: 0;
+}
+
+@keyframes hv3Wave1 {
+    0% {
+        transform: translate(0, 0) rotate(-14deg);
+        opacity: 0;
+    }
+
+    12% {
+        opacity: .9;
+    }
+
+    88% {
+        opacity: .9;
+    }
+
+    100% {
+        transform: translate(130vw, -130vh) rotate(-14deg);
+        opacity: 0;
+    }
+}
+
+.hv3-wave.w2 {
+    bottom: -14%;
+    color: rgba(255, 138, 148, .40);
+    animation: hv3Wave2 28s linear infinite;
+    animation-delay: 3s;
+    opacity: 0;
+}
+
+@keyframes hv3Wave2 {
+    0% {
+        transform: translate(0, 0) rotate(-14deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: .85;
+    }
+
+    90% {
+        opacity: .85;
+    }
+
+    100% {
+        transform: translate(120vw, -120vh) rotate(-14deg);
+        opacity: 0;
+    }
+}
+
+.hv3-wave.w3 {
+    bottom: -20%;
+    color: rgba(10, 31, 61, .32);
+    animation: hv3Wave3 32s linear infinite;
+    animation-delay: 6s;
+    opacity: 0;
+}
+
+@keyframes hv3Wave3 {
+    0% {
+        transform: translate(0, 0) rotate(-14deg);
+        opacity: 0;
+    }
+
+    12% {
+        opacity: .7;
+    }
+
+    88% {
+        opacity: .7;
+    }
+
+    100% {
+        transform: translate(125vw, -125vh) rotate(-14deg);
+        opacity: 0;
+    }
+}
+
+.hv3-wave.w4 {
+    bottom: -5%;
+    color: rgba(241, 36, 58, .38);
+    animation: hv3Wave4 26s linear infinite;
+    animation-delay: 9s;
+    opacity: 0;
+}
+
+@keyframes hv3Wave4 {
+    0% {
+        transform: translate(0, 0) rotate(-14deg);
+        opacity: 0;
+    }
+
+    12% {
+        opacity: .8;
+    }
+
+    88% {
+        opacity: .8;
+    }
+
+    100% {
+        transform: translate(135vw, -135vh) rotate(-14deg);
+        opacity: 0;
+    }
+}
+
+.hv3-wave.w5 {
+    bottom: -25%;
+    color: rgba(10, 31, 61, .22);
+    animation: hv3Wave5 36s linear infinite;
+    animation-delay: 12s;
+    opacity: 0;
+}
+
+@keyframes hv3Wave5 {
+    0% {
+        transform: translate(0, 0) rotate(-14deg);
+        opacity: 0;
+    }
+
+    12% {
+        opacity: .6;
+    }
+
+    88% {
+        opacity: .6;
+    }
+
+    100% {
+        transform: translate(130vw, -130vh) rotate(-14deg);
+        opacity: 0;
+    }
+}
+
+.hv3-glow-pulse {
+    position: absolute;
+    top: -5%;
+    right: -10%;
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(241, 36, 58, .10) 0%, transparent 65%);
+    animation: hv3PulseGlow 8s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes hv3PulseGlow {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: .8;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: .4;
+    }
+}
+
+
+/* ==========================================================================
+   SLIDE CONTENT
+   ========================================================================== */
+.hv3-slide-inner {
+    position: relative;
+    z-index: 3;
+    height: 100%;
+    padding: 64px 480px 100px 64px;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    pointer-events: auto;
+}
+
+.hv3-slide.is-entering .hv3-slide-inner>* {
+    opacity: 0;
+    animation: hv3ContentIn .75s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+.hv3-slide.is-entering .hv3-tag {
+    animation-delay: .28s;
+}
+
+.hv3-slide.is-entering h1 {
+    animation-delay: .36s;
+}
+
+.hv3-slide.is-entering p {
+    animation-delay: .44s;
+}
+
+.hv3-slide.is-entering .hv3-ctas {
+    animation-delay: .52s;
+}
+
+.hv3-slide.is-entering .hv3-ghost {
+    animation-delay: .22s;
+}
+
+@keyframes hv3ContentIn {
+    0% {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.hv3-ghost {
+    position: absolute;
+    top: 40px;
+    right: 480px;
+    font-family: "Adobe Clean Bold", "Adobe Clean", system-ui, sans-serif;
+    font-size: clamp(7rem, 12vw, 11rem);
+    font-weight: 900;
+    line-height: .85;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(10, 31, 61, .07);
+    letter-spacing: -.06em;
+    pointer-events: none;
+    user-select: none;
+    z-index: 4;
+    font-variant-numeric: tabular-nums;
+}
+
+.hv3-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    color: #475569;
+    padding: 6px 16px 6px 6px;
+    border-radius: 999px;
+    font-family: "Adobe Clean Bold", "Adobe Clean", system-ui, sans-serif;
+    font-size: .68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 8px -2px rgba(10, 31, 61, .06);
+}
+
+.hv3-tag-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #FEF0F1;
+    color: #f1243a;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .68rem;
+    flex-shrink: 0;
+}
+
+.hv3-slide h1 {
+    color: #0A1F3D;
+    font-size: clamp(2.1rem, 4vw, 3.4rem);
+    line-height: 1.04;
+    letter-spacing: -.04em;
+    margin: 0 0 20px;
+    max-width: 18ch;
+    font-weight: 700;
+}
+
+.hv3-slide h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, #f1243a 0%, #ff5a5f 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #f1243a;
+    position: relative;
+    white-space: nowrap;
+}
+
+.hv3-slide p {
+    color: #475569;
+    font-size: clamp(.95rem, 1.5vw, 1.08rem);
+    line-height: 1.65;
+    max-width: 52ch;
+    margin: 0 0 28px;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.hv3-ctas {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.hv3-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: #0A1F3D;
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 999px;
+    font-family: "Adobe Clean Bold", "Adobe Clean", system-ui, sans-serif;
+    font-size: .88rem;
+    font-weight: 800;
+    transition: .25s cubic-bezier(.22, 1, .36, 1);
+    box-shadow: 0 12px 28px -10px rgba(10, 31, 61, .4);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.hv3-btn:hover {
+    background: #f1243a;
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px -10px rgba(241, 36, 58, .5);
+    color: #fff;
+}
+
+.hv3-btn i {
+    font-size: .74rem;
+    transition: transform .25s cubic-bezier(.22, 1, .36, 1);
+}
+
+.hv3-btn:hover i {
+    transform: translateX(4px);
+}
+
+.hv3-btn-label {
+    display: inline-block;
+    transition: transform .3s cubic-bezier(.22, 1, .36, 1);
+}
+
+.hv3-btn:hover .hv3-btn-label {
+    transform: translateX(2px);
+}
+
+.hv3-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 14px 22px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1.5px solid #E2E8F0;
+    color: #475569;
+    font-family: "Adobe Clean Bold", "Adobe Clean", system-ui, sans-serif;
+    font-size: .88rem;
+    font-weight: 700;
+    transition: .25s cubic-bezier(.22, 1, .36, 1);
+    text-decoration: none;
+}
+
+.hv3-btn-ghost:hover {
+    border-color: #f1243a;
+    color: #f1243a;
+    background: #FFF5F6;
+}
+
+.hv3-btn-wa i {
+    color: #25D366;
+    font-size: 1rem;
+    transition: transform .25s cubic-bezier(.22, 1, .36, 1);
+}
+
+.hv3-btn-wa:hover {
+    border-color: #25D366;
+    color: #25D366;
+    background: rgba(37, 211, 102, .06);
+}
+
+.hv3-btn-wa:hover i {
+    transform: scale(1.1) rotate(-6deg);
+}
+
+
+/* ==========================================================================
+   CONTROLS
+   ========================================================================== */
+.hv3-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 28px 20px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, .9) 55%, rgba(255, 255, 255, 1) 100%);
+    pointer-events: none;
+}
+
+.hv3-dots {
+    display: flex;
+    gap: 8px;
+    pointer-events: auto;
+}
+
+.hv3-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 2px solid #94A3B8;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: .35s cubic-bezier(.22, 1, .36, 1);
+}
+
+.hv3-dot:hover {
+    border-color: #475569;
+}
+
+.hv3-dot.is-active {
+    background: #f1243a;
+    border-color: #f1243a;
+    width: 32px;
+    border-radius: 8px;
+    box-shadow: 0 0 0 4px rgba(241, 36, 58, .12);
+}
+
+.hv3-arrows {
+    display: flex;
+    gap: 8px;
+    pointer-events: auto;
+}
+
+.hv3-arrow {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1.5px solid #E2E8F0;
+    color: #475569;
+    font-size: .85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .25s cubic-bezier(.22, 1, .36, 1);
+    box-shadow: 0 4px 12px -4px rgba(10, 31, 61, .1);
+}
+
+.hv3-arrow:hover {
+    background: #0A1F3D;
+    color: #fff;
+    border-color: #0A1F3D;
+    transform: scale(1.06);
+    box-shadow: 0 8px 20px -6px rgba(10, 31, 61, .4);
+}
+
+.hv3-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(135deg, #f1243a 0%, #ff5a5f 100%);
+    z-index: 11;
+    transition: width .1s linear;
+    border-radius: 0 3px 3px 0;
+}
+
+
+/* ==========================================================================
+   FLOATING CALCULATOR SLOT (desktop only)
+   ========================================================================== */
+.hv3-calc-float {
+    position: absolute;
+    top: 50%;
+    right: 80px;
+    transform: translateY(-50%);
+    width: 400px;
+    max-height: 78vh;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    pointer-events: auto;
+}
+
+.hv3-calc-float>* {
+    width: 100%;
+    max-height: 100%;
+}
+
+
+/* ==========================================================================
+   MOBILE FAB — floating button inside the slider
+   ========================================================================== */
+.hv3-fab {
+    display: none;
+    position: absolute;
+    right: 20px;
+    bottom: 78px;
+    z-index: 12;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px 10px 12px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #0A1F3D 0%, #1E3A5F 100%);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-family: "Adobe Clean Bold", "Adobe Clean", system-ui, sans-serif;
+    box-shadow:
+        0 14px 32px -10px rgba(10, 31, 61, .5),
+        0 6px 16px -6px rgba(10, 31, 61, .35);
+    transition: .25s cubic-bezier(.22, 1, .36, 1);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.hv3-fab:hover,
+.hv3-fab:focus-visible {
+    transform: translateY(-2px);
+    box-shadow:
+        0 18px 40px -10px rgba(10, 31, 61, .55),
+        0 8px 20px -6px rgba(10, 31, 61, .4);
+    outline: none;
+}
+
+.hv3-fab:active {
+    transform: translateY(0) scale(.97);
+}
+
+.hv3-fab-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f1243a 0%, #ff5a5f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: .92rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px -3px rgba(241, 36, 58, .6);
+}
+
+.hv3-fab-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.1;
+    text-align: left;
+    min-width: 0;
+}
+
+.hv3-fab-text b {
+    font-size: .84rem;
+    font-weight: 800;
+    letter-spacing: -.01em;
+    white-space: nowrap;
+}
+
+.hv3-fab-text span {
+    font-size: .64rem;
+    color: rgba(255, 255, 255, .72);
+    white-space: nowrap;
+    margin-top: 2px;
+}
+
+.hv3-fab-arrow {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .68rem;
+    flex-shrink: 0;
+    transition: .25s cubic-bezier(.22, 1, .36, 1);
+}
+
+.hv3-fab:hover .hv3-fab-arrow {
+    background: #fff;
+    color: #f1243a;
+    transform: translateY(-2px);
+}
+
+
+/* ==========================================================================
+   MOBILE BOTTOM SHEET
+   ========================================================================== */
+.hv3-sheet-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(10, 31, 61, .5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .3s, visibility .3s;
+}
+
+.hv3-sheet-bg.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.hv3-sheet {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 101;
+    background: #fff;
+    border-radius: 24px 24px 0 0;
+    padding: 10px 18px calc(20px + env(safe-area-inset-bottom));
+    max-height: 88vh;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform .35s cubic-bezier(.22, 1, .36, 1);
+    box-shadow: 0 -12px 48px rgba(10, 31, 61, .2);
+    overflow-y: auto;
+}
+
+.hv3-sheet.show {
+    transform: translateY(0);
+}
+
+.hv3-sheet-inner {
+    width: 100%;
+}
+
+.hv3-sheet-inner>* {
+    width: 100%;
+}
+
+.hv3-sheet-inner .vwc-card,
+.hv3-sheet-inner .vcalc-card {
+    max-width: 100% !important;
+    border-radius: 16px;
+    box-shadow: none;
+}
+
+.hv3-sheet-grab {
+    width: 40px;
+    height: 4px;
+    border-radius: 99px;
+    background: #E2E8F0;
+    margin: 6px auto 14px;
+    flex-shrink: 0;
+    display: block;
+}
+
+.hv3-sheet-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #F8FAFC;
+    border: none;
+    color: #475569;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .9rem;
+    transition: .15s;
+    z-index: 2;
+}
+
+.hv3-sheet-close:hover {
+    background: #FEF0F1;
+    color: #f1243a;
+}
+
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1360px) {
+    .hv3-calc-float {
+        right: 60px;
+        width: 380px;
+    }
+
+    .hv3-slide-inner {
+        padding-right: 460px;
+    }
+
+    .hv3-ghost {
+        right: 460px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .hv3-hero {
+        padding: var(--hv3-hero-padding, 24px);
+        min-height: var(--hv3-hero-min-h, 75vh);
+    }
+
+    .hv3-slide-inner {
+        padding: 48px 48px 130px;
+    }
+
+    .hv3-ghost {
+        right: 40px;
+        font-size: clamp(6rem, 14vw, 9rem);
+    }
+
+    .hv3-slider {
+        min-height: 0;
+    }
+
+    .hv3-calc-float {
+        display: none;
+    }
+
+    .hv3-fab {
+        display: inline-flex;
+    }
+
+    .hv3-sheet-bg {
+        display: block;
+    }
+
+    .hv3-sheet {
+        display: flex;
+    }
+}
+
+@media (max-width: 720px) {
+    .hv3-hero {
+        padding: var(--hv3-hero-padding, 16px);
+    }
+
+    .hv3-slider {
+        min-height: 0;
+        border-radius: 18px;
+    }
+
+    .hv3-slide-inner {
+        padding: 32px 24px 120px;
+    }
+
+    .hv3-slide h1 {
+        font-size: clamp(1.7rem, 6.8vw, 2.3rem);
+    }
+
+    .hv3-slide p {
+        font-size: .92rem;
+        -webkit-line-clamp: 3;
+    }
+
+    .hv3-tag {
+        font-size: .62rem;
+        padding: 5px 13px 5px 5px;
+        margin-bottom: 16px;
+    }
+
+    .hv3-tag-icon {
+        width: 20px;
+        height: 20px;
+        font-size: .62rem;
+    }
+
+    .hv3-btn,
+    .hv3-btn-ghost {
+        padding: 11px 18px;
+        font-size: .82rem;
+    }
+
+    .hv3-ctas {
+        gap: 8px;
+    }
+
+    .hv3-controls {
+        padding: 12px 18px 16px;
+    }
+
+    .hv3-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: .78rem;
+    }
+
+    .hv3-dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .hv3-dot.is-active {
+        width: 24px;
+    }
+
+    .hv3-ghost {
+        font-size: 6rem;
+        top: 20px;
+        right: 20px;
+        opacity: .7;
+    }
+
+    .hv3-wave.w5 {
+        display: none;
+    }
+
+    .hv3-fab {
+        right: 16px;
+        bottom: 72px;
+        padding: 9px 14px 9px 10px;
+        gap: 9px;
+    }
+
+    .hv3-fab-icon {
+        width: 32px;
+        height: 32px;
+        font-size: .85rem;
+    }
+
+    .hv3-fab-text b {
+        font-size: .8rem;
+    }
+
+    .hv3-fab-text span {
+        font-size: .62rem;
+    }
+
+    .hv3-fab-arrow {
+        width: 24px;
+        height: 24px;
+        font-size: .64rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hv3-slider {
+        min-height: 0;
+    }
+
+    .hv3-slide-inner {
+        padding: 28px 20px 116px;
+    }
+
+    .hv3-slide h1 {
+        font-size: clamp(1.6rem, 7.5vw, 2.1rem);
+        margin-bottom: 14px;
+    }
+
+    .hv3-slide p {
+        font-size: .88rem;
+        margin-bottom: 22px;
+        -webkit-line-clamp: 3;
+    }
+
+    .hv3-ctas {
+        margin-bottom: 0;
+    }
+
+    .hv3-btn-ghost:not(.hv3-btn-wa) {
+        display: none;
+    }
+
+    .hv3-ghost {
+        display: none;
+    }
+
+    .hv3-wave.w3,
+    .hv3-wave.w5 {
+        display: none;
+    }
+
+    .hv3-fab {
+        right: 14px;
+        bottom: 68px;
+        padding: 8px 12px 8px 9px;
+    }
+
+    .hv3-fab-text span {
+        display: none;
+    }
+}
+
+
+/* ==========================================================================
+   RTL SUPPORT
+   ========================================================================== */
+body.vs-rtl .hv3-slide-inner {
+    padding: 64px 64px 100px 480px;
+    text-align: right;
+    align-items: flex-end;
+}
+
+body.vs-rtl .hv3-ghost {
+    right: auto;
+    left: 480px;
+}
+
+body.vs-rtl .hv3-calc-float {
+    right: auto;
+    left: 80px;
+}
+
+body.vs-rtl .hv3-btn i,
+body.vs-rtl .hv3-arrow i {
+    transform: scaleX(-1);
+}
+
+body.vs-rtl .hv3-btn:hover i {
+    transform: scaleX(-1) translateX(-4px);
+}
+
+body.vs-rtl .hv3-controls {
+    flex-direction: row-reverse;
+}
+
+body.vs-rtl .hv3-tag {
+    padding: 6px 6px 6px 16px;
+    flex-direction: row-reverse;
+}
+
+body.vs-rtl .hv3-fab {
+    right: auto;
+    left: 20px;
+    flex-direction: row-reverse;
+    padding: 10px 12px 10px 16px;
+}
+
+body.vs-rtl .hv3-fab-text {
+    text-align: right;
+    align-items: flex-end;
+}
+
+body.vs-rtl .hv3-sheet-close {
+    right: auto;
+    left: 16px;
+}
+
+@media (max-width: 1360px) {
+    body.vs-rtl .hv3-slide-inner {
+        padding-left: 460px;
+        padding-right: 64px;
+    }
+
+    body.vs-rtl .hv3-ghost {
+        left: 460px;
+    }
+
+    body.vs-rtl .hv3-calc-float {
+        left: 60px;
+    }
+}
+
+@media (max-width: 1100px) {
+    body.vs-rtl .hv3-slide-inner {
+        padding: 48px 48px 130px;
+    }
+
+    body.vs-rtl .hv3-ghost {
+        left: 40px;
+        right: auto;
+    }
+}
+
+@media (max-width: 720px) {
+    body.vs-rtl .hv3-slide-inner {
+        padding: 32px 24px 120px;
+    }
+
+    body.vs-rtl .hv3-ghost {
+        left: 20px;
+        right: auto;
+    }
+
+    body.vs-rtl .hv3-fab {
+        right: auto;
+        left: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    body.vs-rtl .hv3-slide-inner {
+        padding: 28px 20px 116px;
+    }
+
+    body.vs-rtl .hv3-fab {
+        right: auto;
+        left: 14px;
+    }
+}
+
+
+/* ==========================================================================
+   SAFETY FALLBACKS
+   ========================================================================== */
+@supports not ((mask-image: linear-gradient(black, black)) or (-webkit-mask-image: linear-gradient(black, black))) {
+    .hv3-hero::before {
+        -webkit-mask-image: none;
+        mask-image: none;
+        opacity: .5;
+    }
+
+    .hv3-graphics {
+        -webkit-mask-image: none;
+        mask-image: none;
+        opacity: .6;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .hv3-slide,
+    .hv3-slide-inner>*,
+    .hv3-wave,
+    .hv3-graphics::before,
+    .hv3-glow-pulse,
+    .hv3-hero::after,
+    .hv3-hero .hv3-orb-b {
+        animation: none !important;
+        transition: none !important;
+        filter: none !important;
+    }
+
+    .hv3-wave {
+        opacity: .5 !important;
+    }
+
+    .hv3-slide.is-active,
+    .hv3-slide.is-entering,
+    .hv3-slide-inner>* {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .hv3-slide:not(.is-active) {
+        visibility: hidden !important;
+    }
+}
+
+@media print {
+    .hv3-hero {
+        display: none !important;
+    }
+}
+
+
+/* ==========================================================================
+   CALCULATOR HEADER — gradient background
+   Applied to the injected widget's header inside the hero only.
+   Uses .hv3-calc-float (desktop) and .hv3-sheet-inner (mobile) scope.
+   ========================================================================== */
+.hv3-calc-float .vwc-head,
+.hv3-sheet-inner .vwc-head {
+    background: linear-gradient(135deg, #0A1F3D 0%, #1E3A5F 100%);
+    border-bottom: none;
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Soft accent glow inside the header */
+.hv3-calc-float .vwc-head::before,
+.hv3-sheet-inner .vwc-head::before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(241, 36, 58, .25) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Icon tile — red gradient on dark bg */
+.hv3-calc-float .vwc-head-icon,
+.hv3-sheet-inner .vwc-head-icon {
+    background: linear-gradient(135deg, #f1243a 0%, #ff5a5f 100%);
+    color: #fff;
+    box-shadow: 0 6px 16px -4px rgba(241, 36, 58, .55);
+    position: relative;
+    z-index: 1;
+}
+
+/* Title — white */
+.hv3-calc-float .vwc-head-text h3,
+.hv3-sheet-inner .vwc-head-text h3 {
+    color: #fff;
+}
+
+/* Subtitle — soft white */
+.hv3-calc-float .vwc-head-text p,
+.hv3-sheet-inner .vwc-head-text p {
+    color: rgba(255, 255, 255, .72);
+}
+
+/* Live badge — translucent white on dark bg */
+.hv3-calc-float .vwc-badge,
+.hv3-sheet-inner .vwc-badge {
+    background: rgba(255, 255, 255, .14);
+    color: #fff;
+    border-color: rgba(255, 255, 255, .22);
+    position: relative;
+    z-index: 1;
+}
+
+.hv3-calc-float .vwc-badge-dot,
+.hv3-sheet-inner .vwc-badge-dot {
+    background: #7ee2a0;
+    box-shadow: 0 0 0 2px rgba(126, 226, 160, .28);
+}
+
+
+/* ==========================================================================
+   DESKTOP COLLAPSE BUTTON — sits inside the calc card, top-right
+   ========================================================================== */
+.hv3-calc-collapse {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .14);
+    border: 1px solid rgba(255, 255, 255, .22);
+    color: rgba(255, 255, 255, .85);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .68rem;
+    transition: .22s cubic-bezier(.22, 1, .36, 1);
+    z-index: 10;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+}
+
+.hv3-calc-collapse:hover {
+    background: #fff;
+    color: #f1243a;
+    border-color: #fff;
+    transform: scale(1.08) rotate(90deg);
+}
+
+.hv3-calc-collapse:active {
+    transform: scale(.96) rotate(90deg);
+}
+
+/* Collapsed state — hide the card, hide ghost, show only the FAB */
+.hv3-calc-float.is-collapsed {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-50%) translateX(40px) scale(.92);
+    transition: opacity .3s cubic-bezier(.22, 1, .36, 1),
+        transform .35s cubic-bezier(.22, 1, .36, 1),
+        visibility .3s;
+    pointer-events: none;
+}
+
+.hv3-calc-float {
+    transition: opacity .3s cubic-bezier(.22, 1, .36, 1),
+        transform .35s cubic-bezier(.22, 1, .36, 1);
+}
+
+
+/* ==========================================================================
+   DESKTOP FAB — appears only when the calculator is collapsed
+   ========================================================================== */
+.hv3-fab--desktop {
+    display: none;
+    /* toggled via .is-visible */
+    position: absolute;
+    top: 50%;
+    right: 80px;
+    bottom: auto;
+    left: auto;
+    transform: translateY(-50%);
+    z-index: 14;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px 12px 14px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #0A1F3D 0%, #1E3A5F 100%);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-family: "Adobe Clean Bold", "Adobe Clean", system-ui, sans-serif;
+    box-shadow:
+        0 14px 32px -10px rgba(10, 31, 61, .5),
+        0 6px 16px -6px rgba(10, 31, 61, .35);
+    transition: .25s cubic-bezier(.22, 1, .36, 1);
+    -webkit-tap-highlight-color: transparent;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.hv3-fab--desktop.is-visible {
+    display: inline-flex;
+    opacity: 1;
+    visibility: visible;
+    animation: hv3FabPop .4s cubic-bezier(.22, 1, .36, 1);
+}
+
+@keyframes hv3FabPop {
+    0% {
+        transform: translateY(-50%) translateX(30px) scale(.9);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(-50%) translateX(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.hv3-fab--desktop:hover {
+    transform: translateY(-50%) translateX(-4px);
+    box-shadow:
+        0 18px 40px -10px rgba(10, 31, 61, .55),
+        0 8px 20px -6px rgba(10, 31, 61, .4);
+}
+
+.hv3-fab--desktop .hv3-fab-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f1243a 0%, #ff5a5f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: .92rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px -3px rgba(241, 36, 58, .6);
+}
+
+.hv3-fab--desktop .hv3-fab-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.1;
+    text-align: left;
+    min-width: 0;
+}
+
+.hv3-fab--desktop .hv3-fab-text b {
+    font-size: .88rem;
+    font-weight: 800;
+    letter-spacing: -.01em;
+    white-space: nowrap;
+}
+
+.hv3-fab--desktop .hv3-fab-text span {
+    font-size: .66rem;
+    color: rgba(255, 255, 255, .72);
+    white-space: nowrap;
+    margin-top: 2px;
+}
+
+.hv3-fab--desktop .hv3-fab-arrow {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .68rem;
+    flex-shrink: 0;
+    transition: .25s cubic-bezier(.22, 1, .36, 1);
+}
+
+.hv3-fab--desktop:hover .hv3-fab-arrow {
+    background: #fff;
+    color: #f1243a;
+    transform: translateX(-3px);
+}
+
+/* Hide the desktop FAB on ≤1100px — mobile FAB takes over */
+@media (max-width: 1100px) {
+    .hv3-fab--desktop {
+        display: none !important;
+    }
+}
+
+/* Collapse button only on desktop */
+@media (max-width: 1100px) {
+    .hv3-calc-collapse {
+        display: none;
+    }
+}
+
+/* RTL — mirror the collapse button and the desktop FAB */
+body.vs-rtl .hv3-calc-collapse {
+    right: auto;
+    left: 14px;
+    transform: scaleX(-1);
+}
+
+body.vs-rtl .hv3-calc-collapse:hover {
+    transform: scaleX(-1) scale(1.08);
+}
+
+body.vs-rtl .hv3-fab--desktop {
+    right: auto;
+    left: 80px;
+    flex-direction: row-reverse;
+    padding: 12px 14px 12px 18px;
+}
+
+body.vs-rtl .hv3-fab--desktop:hover {
+    transform: translateY(-50%) translateX(4px);
+}
+
+body.vs-rtl .hv3-fab--desktop .hv3-fab-text {
+    text-align: right;
+    align-items: flex-end;
+}
+
+body.vs-rtl .hv3-fab--desktop .hv3-fab-arrow i {
+    transform: scaleX(-1);
+}
+
+body.vs-rtl .hv3-fab--desktop:hover .hv3-fab-arrow {
+    transform: translateX(3px);
+}

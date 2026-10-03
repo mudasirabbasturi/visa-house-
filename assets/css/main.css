@@ -94,7 +94,7 @@
   --r-lg: 18px;
   --r-xl: 24px;
   --r-pill: 999px;
-  --maxw: 1200px;
+  --maxw: 1300px;
 
   /* Shadows */
   --sh-sm: 0 1px 3px rgba(10, 31, 61, .06), 0 1px 2px rgba(10, 31, 61, .04);
@@ -2574,76 +2574,6 @@ ol {
   line-height: 1.7;
 }
 
-
-/* ==========================================================================
-   19. FINAL CTA BANNER
-   ========================================================================== */
-.vs-final-cta {
-  padding: 96px 0;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, var(--primary) 0%, #0D2B4A 100%);
-  color: #fff;
-  text-align: center;
-}
-
-.vs-final-cta::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(60% 80% at 50% 0%, rgba(194, 65, 12, .22) 0%, transparent 60%);
-  pointer-events: none;
-}
-
-.vs-final-cta h2 {
-  font-size: clamp(1.9rem, 4.5vw, 2.6rem);
-  color: #fff;
-  position: relative;
-}
-
-.vs-final-cta p {
-  color: rgba(255, 255, 255, .75);
-  margin: 18px auto 0;
-  max-width: 48ch;
-  font-size: 1.05rem;
-  position: relative;
-}
-
-.vs-final-btns {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 40px;
-  position: relative;
-}
-
-.vs-final-btns .vs-btn-primary {
-  height: 56px;
-  padding: 0 32px;
-  font-size: 1rem;
-  background: var(--paper);
-  color: var(--primary);
-}
-
-.vs-final-btns .vs-btn-primary:hover {
-  box-shadow: 0 12px 32px -8px rgba(255, 255, 255, .3);
-}
-
-.vs-final-btns .vs-btn-outline {
-  height: 56px;
-  padding: 0 28px;
-  font-size: 1rem;
-  background: transparent;
-  color: #fff;
-  border-color: rgba(255, 255, 255, .3);
-}
-
-.vs-final-btns .vs-btn-outline:hover {
-  background: rgba(255, 255, 255, .1);
-  border-color: #fff;
-  color: #fff;
-}
 
 
 /* ==========================================================================

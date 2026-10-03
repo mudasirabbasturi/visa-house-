@@ -1,40 +1,49 @@
 <?php
 /**
- * Homepage — Steps (4 fixed steps from Customizer).
+ * Homepage — Steps (4 fixed steps from Home Steps CPT).
  *
  * @package VisaHouse
  */
 
+$post_id = vs_singleton_get_post( 'vs_steps' );
+if ( ! $post_id ) {
+    return;
+}
+
 $steps = array();
 for ( $i = 1; $i <= 4; $i++ ) {
-    $title = get_theme_mod( "vs_step_{$i}_title", '' );
+    $title = get_post_meta( $post_id, "vs_step_{$i}_title", true );
     if ( ! $title ) {
         continue;
     }
     $steps[] = array(
-        'badge'      => get_theme_mod( "vs_step_{$i}_badge", "Step 0{$i}" ),
-        'number'     => get_theme_mod( "vs_step_{$i}_number", (string) $i ),
+        'badge'      => get_post_meta( $post_id, "vs_step_{$i}_badge",      true ) ?: "Step 0{$i}",
+        'number'     => get_post_meta( $post_id, "vs_step_{$i}_number",     true ) ?: (string) $i,
         'title'      => $title,
-        'text'       => get_theme_mod( "vs_step_{$i}_text", '' ),
-        'visual'     => get_theme_mod( "vs_step_{$i}_visual", '' ),
-        'visual_sub' => get_theme_mod( "vs_step_{$i}_visual_sub", '' ),
+        'text'       => get_post_meta( $post_id, "vs_step_{$i}_text",       true ),
+        'visual'     => get_post_meta( $post_id, "vs_step_{$i}_visual",     true ),
+        'visual_sub' => get_post_meta( $post_id, "vs_step_{$i}_visual_sub", true ),
     );
 }
 
 if ( empty( $steps ) ) {
     return;
 }
+
+$sec_label    = get_post_meta( $post_id, 'vs_steps_label',    true ) ?: __( 'How It Works', 'visahouse' );
+$sec_title    = get_post_meta( $post_id, 'vs_steps_title',    true ) ?: __( 'Everything handled %s.', 'visahouse' );
+$sec_title_em = get_post_meta( $post_id, 'vs_steps_title_em', true ) ?: __( '100% online', 'visahouse' );
 ?>
 
 <section id="vs-how" class="vs-sec vs-sec-alt vs-reveal">
     <div class="vs-wrap">
         <div class="vs-sec-header">
-            <span class="vs-sec-label"><i class="fa-solid fa-list-check"></i> <?php esc_html_e( 'How It Works', 'visahouse' ); ?></span>
+            <span class="vs-sec-label"><i class="fa-solid fa-list-check"></i> <?php echo esc_html( $sec_label ); ?></span>
             <h2 class="vs-sec-title">
                 <?php
                 printf(
-                    esc_html__( 'Everything handled %s.', 'visahouse' ),
-                    '<em>' . esc_html__( '100% online', 'visahouse' ) . '</em>'
+                    esc_html( $sec_title ),
+                    '<em>' . esc_html( $sec_title_em ) . '</em>'
                 );
                 ?>
             </h2>

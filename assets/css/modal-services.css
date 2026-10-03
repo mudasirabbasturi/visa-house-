@@ -21,9 +21,6 @@
     --vh-accent-soft-2: #FEF6EE;
     --vh-accent-glow: rgba(194, 65, 12, .25);
 
-    --vh-wa: #25D366;
-    --vh-wa-dark: #1EBE57;
-
     --vh-r-lg: 22px;
     --vh-r-pill: 999px;
 
@@ -404,64 +401,6 @@
     transform: translateX(3px);
 }
 
-/* ==========================================================================
-   DOCK (footer buttons)
-   ========================================================================== */
-.vh-dock {
-    flex: none;
-    display: flex;
-    gap: 10px;
-    padding: 12px 20px calc(14px + env(safe-area-inset-bottom));
-    border-top: 1px solid var(--vh-line);
-    background: var(--vh-bg-1);
-}
-
-.vh-dbtn {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    font-family: var(--vh-font);
-    font-size: .84rem;
-    font-weight: 700;
-    padding: 13px 14px;
-    border-radius: 16px;
-    border: 1px solid var(--vh-line);
-    background: var(--vh-bg-1);
-    color: var(--vh-t1);
-    text-decoration: none;
-    cursor: pointer;
-    transition: .22s var(--vh-ease);
-    white-space: nowrap;
-    box-shadow: var(--vh-sh-sm);
-}
-
-.vh-dbtn:hover {
-    border-color: var(--vh-accent);
-    color: var(--vh-accent);
-    background: var(--vh-accent-soft-2);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px -6px rgba(194, 65, 12, .2);
-}
-
-.vh-dbtn--wa {
-    background: var(--vh-wa);
-    border-color: var(--vh-wa);
-    color: #04210F;
-    box-shadow: 0 4px 14px -4px rgba(37, 211, 102, .4);
-}
-
-.vh-dbtn--wa:hover {
-    background: var(--vh-wa-dark);
-    border-color: var(--vh-wa-dark);
-    color: #04210F;
-    box-shadow: 0 10px 24px -6px rgba(37, 211, 102, .5);
-}
-
-.vh-dbtn:active {
-    transform: translateY(0) scale(.97);
-}
 
 /* ==========================================================================
    ENTRANCE ANIMATION
@@ -654,15 +593,6 @@
 
     .vh-scroll {
         padding: 14px 16px 18px;
-    }
-
-    .vh-dock {
-        padding: 10px 16px calc(12px + env(safe-area-inset-bottom));
-    }
-
-    .vh-dbtn {
-        padding: 11px 12px;
-        font-size: .8rem;
     }
 }
 

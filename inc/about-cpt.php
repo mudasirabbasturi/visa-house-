@@ -16,15 +16,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 function vs_register_about_cpt() {
     register_post_type( 'vs_about', array(
         'labels' => array(
-            'name'               => __( 'About', 'visahouse' ),
-            'singular_name'      => __( 'About', 'visahouse' ),
-            'menu_name'          => __( 'About', 'visahouse' ),
-            'edit_item'          => __( 'Edit About', 'visahouse' ),
-            'view_item'          => __( 'View About', 'visahouse' ),
-            'all_items'          => __( 'About', 'visahouse' ),
-            'add_new_item'       => __( 'Create About', 'visahouse' ),
-            'new_item'           => __( 'About', 'visahouse' ),
-            'not_found'          => __( 'No About content yet.', 'visahouse' ),
+            'name'               => __( 'Home About', 'visahouse' ),
+            'singular_name'      => __( 'Home About', 'visahouse' ),
+            'menu_name'          => __( 'Home About', 'visahouse' ),
+            'edit_item'          => __( 'Edit Home About', 'visahouse' ),
+            'view_item'          => __( 'View Home About', 'visahouse' ),
+            'all_items'          => __( 'Home About', 'visahouse' ),
+            'add_new_item'       => __( 'Create Home About', 'visahouse' ),
+            'new_item'           => __( 'Home About', 'visahouse' ),
+            'not_found'          => __( 'No Home About content yet.', 'visahouse' ),
         ),
         'public'             => false,
         'publicly_queryable' => false,
@@ -187,7 +187,7 @@ add_action( 'save_post_vs_about', 'vs_about_cpt_save' );
 function vs_about_cpt_admin_title( $title ) {
     global $post_type;
     if ( 'vs_about' === $post_type ) {
-        return __( 'About section (internal name — not shown on the site)', 'visahouse' );
+        return __( 'Home About (internal name — not shown on the site)', 'visahouse' );
     }
     return $title;
 }

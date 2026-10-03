@@ -73,6 +73,7 @@ require_once VS_DIR . '/inc/service-category-meta.php';
 
 require_once VS_DIR . '/inc/singleton-cpt.php';
 require_once VS_DIR . '/inc/about-cpt.php';
+require_once VS_DIR . '/inc/steps-cpt.php';
 require_once VS_DIR . '/inc/footer-cpt.php';
 require_once VS_DIR . '/inc/link-picker.php';
 

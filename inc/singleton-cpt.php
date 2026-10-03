@@ -37,7 +37,7 @@ function vs_singleton_get_post( $post_type ) {
 function vs_singleton_hide_add_new() {
     global $submenu;
 
-    foreach ( array( 'vs_about', 'vs_footer' ) as $post_type ) {
+    foreach ( array( 'vs_about', 'vs_footer', 'vs_steps' ) as $post_type ) {
         if ( ! isset( $submenu[ 'edit.php?post_type=' . $post_type ] ) ) {
             continue;
         }
@@ -56,7 +56,7 @@ add_action( 'admin_menu', 'vs_singleton_hide_add_new', 999 );
  * Remove the "Trash" and "Quick Edit" row actions to protect the singleton.
  */
 function vs_singleton_row_actions( $actions, $post ) {
-    if ( in_array( $post->post_type, array( 'vs_about', 'vs_footer' ), true ) ) {
+    if ( in_array( $post->post_type, array( 'vs_about', 'vs_footer', 'vs_steps' ), true ) ) {
         unset( $actions['trash'] );
         unset( $actions['inline hide-if-no-js'] );
     }

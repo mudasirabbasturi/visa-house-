@@ -5,11 +5,7 @@
  * @package VisaHouse
  */
 
-$title     = vs_get_modal_text( 'vs_modal_title', 'VisaHouse.ae' );
-$calc_lbl  = vs_get_modal_text( 'vs_modal_calc_label', __( 'Calculator', 'visahouse' ) );
-$calc_url  = vs_get_modal_text( 'vs_modal_calc_url', '#calculator' );
-$wa_lbl    = vs_get_modal_text( 'vs_modal_wa_label', __( 'WhatsApp', 'visahouse' ) );
-$wa_number = get_theme_mod( 'vs_whatsapp', '9718003627' );
+$title  = vs_get_modal_text( 'vs_modal_title', 'VisaHouse.ae' );
 
 $groups = vs_get_modal_groups();
 
@@ -113,18 +109,6 @@ if ( empty( $groups ) ) {
 
                 </section>
             <?php endforeach; ?>
-        </div>
-
-        <!-- DOCK -->
-        <div class="vh-dock">
-            <a href="<?php echo esc_url( $calc_url ); ?>" class="vh-dbtn" id="vhCalc" onclick="vsCloseServicesModal()">
-                <i class="fa-solid fa-calculator"></i>
-                <span><?php echo esc_html( $calc_lbl ); ?></span>
-            </a>
-            <a href="https://wa.me/<?php echo esc_attr( $wa_number ); ?>" target="_blank" rel="noopener" class="vh-dbtn vh-dbtn--wa">
-                <i class="fa-brands fa-whatsapp"></i>
-                <span><?php echo esc_html( $wa_lbl ); ?></span>
-            </a>
         </div>
 
     </div>

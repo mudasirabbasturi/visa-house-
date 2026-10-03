@@ -44,8 +44,8 @@ function vs_enqueue_assets() {
 
     // Hero v2 CSS
     wp_enqueue_style(
-        'vs-hero-v2',
-        VS_URI . '/assets/css/hero-v2.css',
+        'hero',
+        VS_URI . '/assets/css/hero.css',
         array( 'vs-main' ),
         VS_VERSION
     );
