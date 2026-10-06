@@ -1,6 +1,6 @@
 <?php
 /**
- * Services Modal — enqueue & helpers.
+ * Services Modal — helpers only (CSS + JS now live in main.css / main.js).
  *
  * @package VisaHouse
  */
@@ -8,27 +8,6 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
-
-/**
- * Enqueue modal CSS & JS.
- */
-function vs_services_modal_assets() {
-    wp_enqueue_style(
-        'vs-modal-services',
-        VS_URI . '/assets/css/modal-services.css',
-        array( 'vs-main' ),
-        VS_VERSION
-    );
-
-    wp_enqueue_script(
-        'vs-modal-services',
-        VS_URI . '/assets/js/modal-services.js',
-        array(),
-        VS_VERSION,
-        true
-    );
-}
-add_action( 'wp_enqueue_scripts', 'vs_services_modal_assets' );
 
 /**
  * Shortcode: [vs_services_button label="Services"]

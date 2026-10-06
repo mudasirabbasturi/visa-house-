@@ -67,22 +67,13 @@ if ( empty( $groups ) ) {
                                 $label = $item['label'] ?? '';
                                 $icon  = $item['icon']  ?? 'fa-star';
                                 $url   = $item['url']   ?? '#';
-                                $tint  = $item['tint']  ?? 'orange';
-
-                                // First item in a cards group becomes the feature tile
                                 $is_feature = ( 1 === $i );
                                 $tile_class = 'btile';
                                 if ( $is_feature ) {
                                     $tile_class .= ' btile--feature';
                                 }
                                 ?>
-                                <a class="<?php echo esc_attr( $tile_class ); ?> btile-tint-<?php echo esc_attr( $tint ); ?>" href="<?php echo esc_url( $url ); ?>">
-                                    <?php if ( $is_feature ) : ?>
-                                        <span class="btile-tag"><?php esc_html_e( 'Popular', 'visahouse' ); ?></span>
-                                    <?php endif; ?>
-                                    <span class="btile-ic"><i class="fa-solid <?php echo esc_attr( $icon ); ?>"></i></span>
-                                    <span class="btile-name"><?php echo esc_html( $label ); ?></span>
-                                </a>
+                                <a class="<?php echo esc_attr( $tile_class ); ?>" href="<?php echo esc_url( $url ); ?>">
                                 <?php
                             endforeach;
                             ?>

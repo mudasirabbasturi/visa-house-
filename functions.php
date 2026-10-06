@@ -61,7 +61,6 @@ require_once VS_DIR . '/inc/cpt.php';
 require_once VS_DIR . '/inc/service-meta.php';
 require_once VS_DIR . '/inc/review-meta.php';
 require_once VS_DIR . '/inc/customizer.php';
-require_once VS_DIR . '/inc/typography.php'; // NEW INCLUDE
 require_once VS_DIR . '/inc/template-tags.php';
 require_once VS_DIR . '/inc/class-vs-walker-nav.php';
 require_once VS_DIR . '/inc/modal-cpt.php';

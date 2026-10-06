@@ -56,7 +56,6 @@ function vs_get_modal_groups() {
                 'id'    => $post->ID,
                 'label' => get_the_title( $post ),
                 'icon'  => get_post_meta( $post->ID, 'vs_item_icon', true ) ?: 'fa-star',
-                'tint'  => get_post_meta( $post->ID, 'vs_item_tint', true ) ?: 'orange',
                 'url'   => get_post_meta( $post->ID, 'vs_item_url',  true ) ?: '#',
             );
         }

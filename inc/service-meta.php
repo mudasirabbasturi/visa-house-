@@ -53,11 +53,11 @@ function vs_service_meta_box_render( $post ) {
         .vs-svc-grid input[type=text],
         .vs-svc-grid select { width: 100%; max-width: 520px; }
         .vs-svc-hint { color: #666; font-size: 12px; margin-top: 4px; }
-        .vs-svc-preview { display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; font-weight: 600; font-size: 13px; color: #C2410C; }
+        .vs-svc-preview { display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; font-weight: 600; font-size: 13px; color: #2563EB; }
         .vs-svc-features { display: flex; flex-direction: column; gap: 8px; max-width: 520px; }
         .vs-svc-features input { width: 100%; }
         .vs-svc-features .vs-svc-feature-row { display: flex; align-items: center; gap: 10px; }
-        .vs-svc-features .vs-svc-feature-row i { color: #10B981; font-size: 14px; flex-shrink: 0; }
+        .vs-svc-features .vs-svc-feature-row i { color: #2563EB; font-size: 14px; flex-shrink: 0; }
     </style>
 
     <div class="vs-svc-grid">

@@ -1,6 +1,17 @@
 /**
  * VisaHouse main JS.
  * Author: Mudasir Abbas
+ *
+ * Includes:
+ *  - Modals (WhatsApp, services)
+ *  - Mobile drawer
+ *  - Language switcher (Polylang)
+ *  - Calculator bridge
+ *  - Reviews slider pause/play
+ *  - Back-to-top button
+ *  - Reveal on scroll
+ *  - Smooth anchor scroll
+ *  - Services modal controller (was modal-services.js)
  */
 (function () {
     'use strict';
@@ -11,6 +22,9 @@
     function $(id) { return document.getElementById(id); }
 
 
+    /* ============================================================
+       TRACKING HELPER
+       ============================================================ */
     window.vsTrack = function (name) {
         try {
             if (typeof gtag === 'function') gtag('event', name, { event_category: 'engagement' });
@@ -19,7 +33,10 @@
         } catch (e) { }
     };
 
-    /* Modals */
+
+    /* ============================================================
+       GENERIC MODALS (WhatsApp, etc.)
+       ============================================================ */
     window.vsShowModal = function (id) {
         var m = $(id); if (!m) return;
         m.classList.remove('vs-hidden');
@@ -49,7 +66,26 @@
     /* WhatsApp */
     window.vsShowWhatsAppModal = function () { window.vsShowModal('vsWaModal'); };
 
-    /* Mobile Drawer */
+    window.vsSendToWhatsApp = function (type) {
+        var msg;
+        switch (type) {
+            case 'family-new':
+                msg = 'Hello VisaHouse, I want to apply for a NEW UAE family visa. Please help me get started.';
+                break;
+            case 'family-renew':
+                msg = 'Hello VisaHouse, I want to RENEW my UAE family visa. Please help me with the process.';
+                break;
+            default:
+                msg = "Hello VisaHouse, I'm not sure which option I need. Can you advise me?";
+        }
+        window.vsHideModal('vsWaModal');
+        window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(msg), '_blank');
+    };
+
+
+    /* ============================================================
+       MOBILE DRAWER
+       ============================================================ */
     var drawer = $('vsMobileDrawer');
     var toggle = $('vsMobileToggle');
     var drawerClose = $('vsMobileDrawerClose');
@@ -73,30 +109,82 @@
     if (toggle) toggle.addEventListener('click', window.vsOpenMobileDrawer);
     if (drawerClose) drawerClose.addEventListener('click', window.vsCloseMobileDrawer);
 
-    // Close drawer when clicking the semi-transparent overlay outside the panel
     if (drawer) {
         drawer.addEventListener('click', function (e) {
             if (e.target === drawer) window.vsCloseMobileDrawer();
         });
     }
 
-    window.vsSendToWhatsApp = function (type) {
-        var msg;
-        switch (type) {
-            case 'family-new':
-                msg = 'Hello VisaHouse, I want to apply for a NEW UAE family visa. Please help me get started.';
-                break;
-            case 'family-renew':
-                msg = 'Hello VisaHouse, I want to RENEW my UAE family visa. Please help me with the process.';
-                break;
-            default:
-                msg = "Hello VisaHouse, I'm not sure which option I need. Can you advise me?";
-        }
-        window.vsHideModal('vsWaModal');
-        window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(msg), '_blank');
-    };
 
-    /* Calculator bridge (plugin provides window.pvcOpenCalculator) */
+    /* ============================================================
+       SERVICES MODAL (was modal-services.js)
+       ID: #vsServicesModal
+       Trigger: #vs-services-modal  OR  [data-vs-open="services"]
+       ============================================================ */
+    (function () {
+        var modal = document.getElementById('vsServicesModal');
+        if (!modal) return;
+
+        var closeBtn = modal.querySelector('.vh-x');
+
+        window.vsOpenServicesModal = function () {
+            modal.hidden = false;
+            void modal.offsetWidth;
+            modal.classList.add('is-open');
+            document.documentElement.style.overflow = 'hidden';
+            document.body.classList.add('vs-modal-open');
+            if (closeBtn) setTimeout(function () { closeBtn.focus(); }, 400);
+        };
+
+        window.vsCloseServicesModal = function () {
+            modal.classList.remove('is-open');
+            document.documentElement.style.overflow = '';
+            document.body.classList.remove('vs-modal-open');
+            setTimeout(function () {
+                if (!modal.classList.contains('is-open')) modal.hidden = true;
+            }, 520);
+        };
+
+        if (closeBtn) closeBtn.addEventListener('click', window.vsCloseServicesModal);
+
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) window.vsCloseServicesModal();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if ((e.key === 'Escape' || e.keyCode === 27) && modal.classList.contains('is-open')) {
+                window.vsCloseServicesModal();
+            }
+        });
+
+        /* Focus trap */
+        modal.addEventListener('keydown', function (e) {
+            if (e.key !== 'Tab') return;
+            var f = modal.querySelectorAll('a[href], button:not([disabled])');
+            if (!f.length) return;
+            var first = f[0], last = f[f.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        });
+
+        /* Auto-trigger */
+        document.addEventListener('click', function (e) {
+            var trigger = e.target.closest('a[href="#vs-services-modal"], [data-vs-open="services"]');
+            if (!trigger) return;
+            e.preventDefault();
+            window.vsOpenServicesModal();
+        });
+
+        /* Open on page load if URL has the hash */
+        if (window.location.hash === '#vs-services-modal') {
+            setTimeout(function () { window.vsOpenServicesModal(); }, 400);
+        }
+    })();
+
+
+    /* ============================================================
+       CALCULATOR BRIDGE (plugin provides window.pvcOpenCalculator)
+       ============================================================ */
     window.vsOpenCalculator = function (look) {
         window.vsTrack('Calculator_Opened');
         if (typeof window.pvcOpenCalculator !== 'function') {
@@ -126,7 +214,6 @@
         })();
     }
 
-    /* Bind click on [data-vs-calc-open] */
     document.addEventListener('click', function (e) {
         var el = e.target.closest('[data-vs-calc-open]');
         if (!el) return;
@@ -135,7 +222,10 @@
         window.vsOpenCalculator(cat);
     });
 
-    /* Reveal on scroll */
+
+    /* ============================================================
+       REVEAL ON SCROLL
+       ============================================================ */
     function vsReveal() {
         var els = document.querySelectorAll('.vs-reveal');
         if (!('IntersectionObserver' in window)) {
@@ -150,7 +240,10 @@
         for (var j = 0; j < els.length; j++) io.observe(els[j]);
     }
 
-    /* Smooth anchor scroll */
+
+    /* ============================================================
+       SMOOTH ANCHOR SCROLL
+       ============================================================ */
     document.addEventListener('click', function (e) {
         var a = e.target.closest('a[href^="#"]');
         if (!a) return;
@@ -159,6 +252,8 @@
         var target = document.querySelector(href);
         if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
     });
+
+
     /* ============================================================
        REVIEWS SLIDER — pause / play toggle
        ============================================================ */
@@ -170,7 +265,6 @@
         var autoplay = track.closest('[data-autoplay]');
         var autoplayOn = autoplay ? autoplay.getAttribute('data-autoplay') === '1' : true;
 
-        // If autoplay was turned off from admin, apply the paused state on load
         if (!autoplayOn) {
             track.style.animationPlayState = 'paused';
             toggle.classList.add('is-paused');
@@ -181,13 +275,11 @@
         toggle.addEventListener('click', function () {
             var paused = track.style.animationPlayState === 'paused';
             if (paused) {
-                // Play
                 track.style.animationPlayState = '';
                 toggle.classList.remove('is-paused');
                 toggle.setAttribute('aria-pressed', 'false');
                 toggle.setAttribute('aria-label', 'Pause auto-scroll');
             } else {
-                // Pause
                 track.style.animationPlayState = 'paused';
                 toggle.classList.add('is-paused');
                 toggle.setAttribute('aria-pressed', 'true');
@@ -195,7 +287,6 @@
             }
         });
 
-        // Optional: pause on hover (keep this on by default)
         var wrap = track.closest('.vs-reviews-track-wrap');
         if (wrap) {
             wrap.addEventListener('mouseenter', function () {
@@ -211,9 +302,10 @@
         }
     })();
 
+
     /* ============================================================
-   BACK TO TOP
-   ============================================================ */
+       BACK TO TOP
+       ============================================================ */
     (function () {
         var btn = document.getElementById('vsBackToTop');
         if (!btn) return;
@@ -237,13 +329,15 @@
 
         onScroll();
     })();
-    document.addEventListener('DOMContentLoaded', function () { vsReveal(); });
+
 
     /* ============================================================
        LANGUAGE SWITCHER (Polylang)
        ============================================================ */
-    var langSwitcher = document.getElementById('vsLangSwitcher');
-    if (langSwitcher) {
+    (function () {
+        var langSwitcher = document.getElementById('vsLangSwitcher');
+        if (!langSwitcher) return;
+
         var langBtn = langSwitcher.querySelector('.vs-lang-btn');
 
         if (langBtn) {
@@ -254,7 +348,6 @@
             });
         }
 
-        // Close when clicking outside
         document.addEventListener('click', function (e) {
             if (!langSwitcher.contains(e.target)) {
                 langSwitcher.classList.remove('is-open');
@@ -262,13 +355,22 @@
             }
         });
 
-        // Close on Escape
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' || e.keyCode === 27) {
                 langSwitcher.classList.remove('is-open');
                 if (langBtn) langBtn.setAttribute('aria-expanded', 'false');
             }
         });
+    })();
+
+
+    /* ============================================================
+       INIT
+       ============================================================ */
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', vsReveal);
+    } else {
+        vsReveal();
     }
 
 })();

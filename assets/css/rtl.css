@@ -1,11 +1,47 @@
 /* ==========================================================================
-   RTL SUPPORT — hero fully mirrors in Arabic
-   Applies with either body.vs-rtl OR [dir="rtl"] on <html>
+   RTL SUPPORT — Full site mirror for Arabic (Polylang)
+   Loads with body.vs-rtl OR [dir="rtl"] on <html>
+   Covers: header, nav, hero slider, calculator, modals, footer, misc.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   Slide content — anchor to the RIGHT edge, reserve space on the LEFT
+   01. BASE
    -------------------------------------------------------------------------- */
+body.vs-rtl,
+[dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+}
+
+body.vs-rtl .vs-breadcrumb i,
+body.vs-rtl .vs-art-read i,
+body.vs-rtl .vs-service-cta i,
+body.vs-rtl .vs-modal-option-arrow i,
+[dir="rtl"] .vs-breadcrumb i,
+[dir="rtl"] .vs-art-read i,
+[dir="rtl"] .vs-service-cta i,
+[dir="rtl"] .vs-modal-option-arrow i {
+    transform: scaleX(-1);
+}
+
+body.vs-rtl .alignleft,
+[dir="rtl"] .alignleft {
+    float: right;
+    margin: 0 0 16px 24px;
+}
+
+body.vs-rtl .alignright,
+[dir="rtl"] .alignright {
+    float: left;
+    margin: 0 24px 16px 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   02. HERO — VISA SLIDER (.hv3-*)
+   -------------------------------------------------------------------------- */
+
+/* Slide content — anchor to the RIGHT, reserve space on the LEFT */
 body.vs-rtl .hv3-slide-inner,
 [dir="rtl"] .hv3-slide-inner {
     padding: 64px 64px 100px 480px;
@@ -13,25 +49,21 @@ body.vs-rtl .hv3-slide-inner,
     align-items: flex-start;
 }
 
-/* Ghost number — mirror to the LEFT side (over the calculator zone) */
+/* Ghost number — mirror to the LEFT */
 body.vs-rtl .hv3-ghost,
 [dir="rtl"] .hv3-ghost {
     right: auto;
     left: 40px;
 }
 
-/* --------------------------------------------------------------------------
-   Calculator — floats to the LEFT
-   -------------------------------------------------------------------------- */
+/* Calculator floats LEFT */
 body.vs-rtl .hv3-calc-float,
 [dir="rtl"] .hv3-calc-float {
     right: auto;
     left: 80px;
 }
 
-/* --------------------------------------------------------------------------
-   Buttons & icons that mirror
-   -------------------------------------------------------------------------- */
+/* Buttons & arrows mirror */
 body.vs-rtl .hv3-btn i,
 body.vs-rtl .hv3-arrow i,
 [dir="rtl"] .hv3-btn i,
@@ -51,7 +83,7 @@ body.vs-rtl .hv3-tag,
     flex-direction: row-reverse;
 }
 
-/* Controls — dots on the right, arrows on the left */
+/* Controls — dots right, arrows left */
 body.vs-rtl .hv3-controls,
 [dir="rtl"] .hv3-controls {
     flex-direction: row-reverse;
@@ -65,9 +97,7 @@ body.vs-rtl .hv3-progress,
     border-radius: 3px 0 0 3px;
 }
 
-/* --------------------------------------------------------------------------
-   Mobile FAB — docks to the LEFT in RTL
-   -------------------------------------------------------------------------- */
+/* Mobile FAB — docks LEFT */
 body.vs-rtl .hv3-fab,
 [dir="rtl"] .hv3-fab {
     right: auto;
@@ -82,16 +112,14 @@ body.vs-rtl .hv3-fab-text,
     align-items: flex-end;
 }
 
-/* Sheet close button — top-left in RTL */
+/* Sheet close button — top-left */
 body.vs-rtl .hv3-sheet-close,
 [dir="rtl"] .hv3-sheet-close {
     right: auto;
     left: 16px;
 }
 
-/* --------------------------------------------------------------------------
-   Desktop collapse button — top-LEFT in RTL
-   -------------------------------------------------------------------------- */
+/* Desktop collapse button — top-LEFT */
 body.vs-rtl .hv3-calc-collapse,
 [dir="rtl"] .hv3-calc-collapse {
     right: auto;
@@ -104,7 +132,7 @@ body.vs-rtl .hv3-calc-collapse:hover,
     transform: scaleX(-1) scale(1.08) rotate(90deg);
 }
 
-/* Desktop FAB — docks to the LEFT in RTL */
+/* Desktop FAB — docks LEFT */
 body.vs-rtl .hv3-fab--desktop,
 [dir="rtl"] .hv3-fab--desktop {
     right: auto;
@@ -134,11 +162,54 @@ body.vs-rtl .hv3-fab--desktop:hover .hv3-fab-arrow,
     transform: translateX(3px);
 }
 
+
 /* --------------------------------------------------------------------------
-   Responsive — RTL mirrors padding at each breakpoint
+   03. HERO — GENERAL (.vs-hero)
+   -------------------------------------------------------------------------- */
+body.vs-rtl .vs-hero h1 em::after,
+body.vs-rtl .vs-page-hero h1 em::after,
+[dir="rtl"] .vs-hero h1 em::after,
+[dir="rtl"] .vs-page-hero h1 em::after {
+    background: linear-gradient(270deg, rgba(194, 65, 12, .25), rgba(194, 65, 12, .08));
+}
+
+
+/* --------------------------------------------------------------------------
+   04. LANGUAGE SWITCHER
+   -------------------------------------------------------------------------- */
+body.vs-rtl .vs-lang-menu,
+[dir="rtl"] .vs-lang-menu {
+    right: auto !important;
+    left: 0 !important;
+}
+
+body.vs-rtl .vs-lang-menu li a,
+[dir="rtl"] .vs-lang-menu li a {
+    flex-direction: row-reverse;
+}
+
+
+/* --------------------------------------------------------------------------
+   05. STEPS / SERVICES / ARTICLES
+   -------------------------------------------------------------------------- */
+body.vs-rtl .vs-step-creative:not(:last-child)::after,
+[dir="rtl"] .vs-step-creative:not(:last-child)::after {
+    right: auto;
+    left: -10px;
+}
+
+body.vs-rtl .vs-art-tag,
+[dir="rtl"] .vs-art-tag {
+    left: auto;
+    right: 16px;
+}
+
+
+/* --------------------------------------------------------------------------
+   06. RESPONSIVE — RTL mirrors padding at each breakpoint
    -------------------------------------------------------------------------- */
 
-/* ≥1100px and ≤1360px — calc slightly narrower */
+/* ≤1360px — calc slightly narrower */
 @media (max-width: 1360px) {
 
     body.vs-rtl .hv3-slide-inner,
@@ -165,7 +236,7 @@ body.vs-rtl .hv3-fab--desktop:hover .hv3-fab-arrow,
     }
 }
 
-/* ≤1100px — calc hides, FAB appears; full-width content */
+/* ≤1100px — calc hides, FAB appears */
 @media (max-width: 1100px) {
 
     body.vs-rtl .hv3-slide-inner,

@@ -1,6 +1,6 @@
 <?php
 /**
- * Homepage — Hero (single-column slider + glow waves + floating calculator / FAB).
+ * Homepage â€” Hero (single-column slider + glow waves + floating calculator / FAB).
  *
  * @package VisaHouse
  */
@@ -45,7 +45,7 @@ if ( ! empty( $hero_cats ) ) {
 
         if ( '' === $section_desc ) {
             $section_desc = sprintf(
-                __( 'Explore our %s services — 100%% online, itemized government fees, handled end to end.', 'visahouse' ),
+                __( 'Explore our %s services â€” 100%% online, itemized government fees, handled end to end.', 'visahouse' ),
                 strtolower( $cat->name )
             );
         }
@@ -67,7 +67,7 @@ if ( empty( $slides ) ) {
         'tag'      => __( 'Trusted & Licensed', 'visahouse' ),
         'tag_icon' => 'fa-shield-halved',
         'title'    => __( 'Your UAE visa, <em>done for you</em>.', 'visahouse' ),
-        'text'     => __( 'Sponsor your spouse, children, or parents. Exact government fees in under 30 seconds — then we handle the whole application from your phone.', 'visahouse' ),
+        'text'     => __( 'Sponsor your spouse, children, or parents. Exact government fees in under 30 seconds â€” then we handle the whole application from your phone.', 'visahouse' ),
         'link'     => get_post_type_archive_link( 'service' ) ?: home_url( '/' ),
         'cta'      => __( 'Explore Services', 'visahouse' ),
         'wa_text'  => __( 'Hello VisaHouse, I would like a quote.', 'visahouse' ),
@@ -116,10 +116,10 @@ wp_reset_postdata();
                             <svg class="hv3-wave w1" viewBox="0 0 1200 400" preserveAspectRatio="none">
                                 <defs>
                                     <linearGradient id="hv3Wave1_<?php echo (int) $i; ?>" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%"   stop-color="#f1243a" stop-opacity="0"/>
-                                        <stop offset="35%"  stop-color="#f1243a" stop-opacity=".55"/>
-                                        <stop offset="65%"  stop-color="#ff5a5f" stop-opacity=".75"/>
-                                        <stop offset="100%" stop-color="#f1243a" stop-opacity="0"/>
+                                        <stop offset="0%"   stop-color="var(--accent)" stop-opacity="0"/>
+                                        <stop offset="35%"  stop-color="var(--accent)" stop-opacity=".55"/>
+                                        <stop offset="65%"  stop-color="var(--accent-hover)" stop-opacity=".75"/>
+                                        <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
                                     </linearGradient>
                                 </defs>
                                 <path d="M -100,320 C 200,220 450,340 700,200 S 1100,120 1300,180"
@@ -130,10 +130,10 @@ wp_reset_postdata();
                             <svg class="hv3-wave w2" viewBox="0 0 1200 400" preserveAspectRatio="none">
                                 <defs>
                                     <linearGradient id="hv3Wave2_<?php echo (int) $i; ?>" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%"   stop-color="#ff8a94" stop-opacity="0"/>
-                                        <stop offset="40%"  stop-color="#ff8a94" stop-opacity=".45"/>
-                                        <stop offset="70%"  stop-color="#f1243a" stop-opacity=".6"/>
-                                        <stop offset="100%" stop-color="#ff8a94" stop-opacity="0"/>
+                                        <stop offset="0%"   stop-color="var(--accent-soft)" stop-opacity="0"/>
+                                        <stop offset="40%"  stop-color="var(--accent-soft)" stop-opacity=".45"/>
+                                        <stop offset="70%"  stop-color="var(--accent)" stop-opacity=".6"/>
+                                        <stop offset="100%" stop-color="var(--accent-soft)" stop-opacity="0"/>
                                     </linearGradient>
                                 </defs>
                                 <path d="M -100,180 C 250,320 500,120 750,260 S 1150,180 1300,280"
@@ -144,10 +144,10 @@ wp_reset_postdata();
                             <svg class="hv3-wave w3" viewBox="0 0 1200 400" preserveAspectRatio="none">
                                 <defs>
                                     <linearGradient id="hv3Wave3_<?php echo (int) $i; ?>" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%"   stop-color="#0A1F3D" stop-opacity="0"/>
-                                        <stop offset="40%"  stop-color="#0A1F3D" stop-opacity=".3"/>
-                                        <stop offset="75%"  stop-color="#1E3A5F" stop-opacity=".5"/>
-                                        <stop offset="100%" stop-color="#0A1F3D" stop-opacity="0"/>
+                                        <stop offset="0%"   stop-color="var(--primary)" stop-opacity="0"/>
+                                        <stop offset="40%"  stop-color="var(--primary)" stop-opacity=".3"/>
+                                        <stop offset="75%"  stop-color="var(--primary-light)" stop-opacity=".5"/>
+                                        <stop offset="100%" stop-color="var(--primary)" stop-opacity="0"/>
                                     </linearGradient>
                                 </defs>
                                 <path d="M -100,80 C 300,220 550,40 800,180 S 1200,80 1300,160"
@@ -158,10 +158,10 @@ wp_reset_postdata();
                             <svg class="hv3-wave w4" viewBox="0 0 1200 400" preserveAspectRatio="none">
                                 <defs>
                                     <linearGradient id="hv3Wave4_<?php echo (int) $i; ?>" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%"   stop-color="#f1243a" stop-opacity="0"/>
-                                        <stop offset="45%"  stop-color="#ff5a5f" stop-opacity=".4"/>
-                                        <stop offset="75%"  stop-color="#f1243a" stop-opacity=".55"/>
-                                        <stop offset="100%" stop-color="#ff5a5f" stop-opacity="0"/>
+                                        <stop offset="0%"   stop-color="var(--accent)" stop-opacity="0"/>
+                                        <stop offset="45%"  stop-color="var(--accent-hover)" stop-opacity=".4"/>
+                                        <stop offset="75%"  stop-color="var(--accent)" stop-opacity=".55"/>
+                                        <stop offset="100%" stop-color="var(--accent-hover)" stop-opacity="0"/>
                                     </linearGradient>
                                 </defs>
                                 <path d="M -100,260 C 180,140 420,300 680,160 S 1080,240 1300,120"
@@ -172,10 +172,10 @@ wp_reset_postdata();
                             <svg class="hv3-wave w5" viewBox="0 0 1200 400" preserveAspectRatio="none">
                                 <defs>
                                     <linearGradient id="hv3Wave5_<?php echo (int) $i; ?>" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%"   stop-color="#0A1F3D" stop-opacity="0"/>
-                                        <stop offset="50%"  stop-color="#64748B" stop-opacity=".2"/>
-                                        <stop offset="80%"  stop-color="#0A1F3D" stop-opacity=".3"/>
-                                        <stop offset="100%" stop-color="#0A1F3D" stop-opacity="0"/>
+                                        <stop offset="0%"   stop-color="var(--primary)" stop-opacity="0"/>
+                                        <stop offset="50%"  stop-color="var(--ink-3)" stop-opacity=".2"/>
+                                        <stop offset="80%"  stop-color="var(--primary)" stop-opacity=".3"/>
+                                        <stop offset="100%" stop-color="var(--primary)" stop-opacity="0"/>
                                     </linearGradient>
                                 </defs>
                                 <path d="M -100,340 C 220,220 480,380 740,220 S 1140,300 1300,220"
@@ -255,7 +255,7 @@ wp_reset_postdata();
         </div>
 
         <!-- ============================================================
-             FLOATING CALCULATOR (desktop) — with collapse toggle
+             FLOATING CALCULATOR (desktop) â€” with collapse toggle
              ============================================================ -->
         <?php if ( $trigger_content ) : ?>
             <aside class="hv3-calc-float" id="hv3CalcFloat" aria-label="<?php esc_attr_e( 'Visa calculator', 'visahouse' ); ?>">
@@ -404,7 +404,7 @@ wp_reset_postdata();
   startAuto();
 
   /* ============================================================
-     CALCULATOR — collapse / expand
+     CALCULATOR â€” collapse / expand
      Shared between desktop float and mobile FAB.
      ============================================================ */
   var calcFloat     = document.getElementById('hv3CalcFloat');
@@ -428,7 +428,7 @@ wp_reset_postdata();
   if (calcCollapse) calcCollapse.addEventListener('click', collapseCalc);
   if (fabDesktop)  fabDesktop.addEventListener('click', expandCalc);
 
-  /* Mobile FAB → open the calculator by scrolling to the trigger page's hash */
+  /* Mobile FAB â†’ open the calculator by scrolling to the trigger page's hash */
   if (fabMobile) {
     fabMobile.addEventListener('click', function () {
       /* Bridge to the theme's calculator opener if present */

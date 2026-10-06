@@ -166,17 +166,8 @@ function vs_modal_item_meta_box_render( $post ) {
     wp_nonce_field( 'vs_modal_item_save', 'vs_modal_item_nonce' );
 
     $icon = get_post_meta( $post->ID, 'vs_item_icon', true ) ?: 'fa-star';
-    $tint = get_post_meta( $post->ID, 'vs_item_tint', true ) ?: 'orange';
     $url  = get_post_meta( $post->ID, 'vs_item_url',  true ) ?: '';
 
-    $tints = array(
-        'orange' => __( 'Orange (brand)', 'visahouse' ),
-        'gold'   => __( 'Gold', 'visahouse' ),
-        'blue'   => __( 'Blue', 'visahouse' ),
-        'green'  => __( 'Green', 'visahouse' ),
-        'purple' => __( 'Purple', 'visahouse' ),
-        'pink'   => __( 'Pink', 'visahouse' ),
-    );
     ?>
     <style>
         .vs-meta-grid { display: grid; grid-template-columns: 130px 1fr; gap: 14px 18px; align-items: center; max-width: 640px; padding: 10px 0; }
@@ -184,7 +175,7 @@ function vs_modal_item_meta_box_render( $post ) {
         .vs-meta-grid input[type=text],
         .vs-meta-grid select { width: 100%; max-width: 480px; }
         .vs-meta-hint { color: #666; font-size: 12px; margin-top: 4px; }
-        .vs-icon-preview { display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; font-weight: 600; font-size: 13px; color: #C2410C; }
+        .vs-icon-preview { display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; font-weight: 600; font-size: 13px; color: #2563EB; }
     </style>
 
     <div class="vs-meta-grid">
@@ -195,16 +186,6 @@ function vs_modal_item_meta_box_render( $post ) {
                 <i class="fa-solid <?php echo esc_attr( $icon ); ?>"></i> <span>Preview</span>
             </div>
             <p class="vs-meta-hint"><?php esc_html_e( 'FontAwesome class, e.g. fa-people-roof, fa-crown, fa-building, fa-baby, fa-hands-holding-child, fa-id-card', 'visahouse' ); ?></p>
-        </div>
-
-        <label for="vs_item_tint"><?php esc_html_e( 'Tint color', 'visahouse' ); ?></label>
-        <div>
-            <select id="vs_item_tint" name="vs_item_tint">
-                <?php foreach ( $tints as $key => $label ) : ?>
-                    <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $tint, $key ); ?>><?php echo esc_html( $label ); ?></option>
-                <?php endforeach; ?>
-            </select>
-            <p class="vs-meta-hint"><?php esc_html_e( 'Only applies to Cards layout groups.', 'visahouse' ); ?></p>
         </div>
 
         <label for="vs_item_url"><?php esc_html_e( 'URL', 'visahouse' ); ?></label>
@@ -224,9 +205,6 @@ function vs_modal_item_save_meta( $post_id ) {
 
     if ( isset( $_POST['vs_item_icon'] ) ) {
         update_post_meta( $post_id, 'vs_item_icon', sanitize_text_field( $_POST['vs_item_icon'] ) );
-    }
-    if ( isset( $_POST['vs_item_tint'] ) ) {
-        update_post_meta( $post_id, 'vs_item_tint', sanitize_text_field( $_POST['vs_item_tint'] ) );
     }
     if ( isset( $_POST['vs_item_url'] ) ) {
         update_post_meta( $post_id, 'vs_item_url', esc_url_raw( $_POST['vs_item_url'] ) );
