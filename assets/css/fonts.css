@@ -83,3 +83,113 @@
     font-style: italic;
     font-display: swap;
 }
+
+/* ==========================================================================
+   AVENIR LT STD — Self-hosted
+   ========================================================================== */
+@font-face {
+    font-family: "Avenir LT Std";
+    src: url("../fonts/avenir/AvenirLTStd-Light.woff2") format("woff2");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Avenir LT Std";
+    src: url("../fonts/avenir/AvenirLTStd-Medium.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Avenir LT Std";
+    src: url("../fonts/avenir/AvenirLTStd-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Avenir LT Std";
+    src: url("../fonts/avenir/AvenirLTStd-Heavy.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Avenir LT Std";
+    src: url("../fonts/avenir/AvenirLTStd-Heavy.woff2") format("woff2");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ==========================================================================
+   GOOGLE FONTS (Local woff2)
+   ========================================================================== */
+@font-face {
+    font-family: "Pacifico";
+    src: url("../fonts/google/pacifico-v23-latin-regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Caveat";
+    src: url("../fonts/google/caveat-v23-latin-regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Great Vibes";
+    src: url("../fonts/google/great-vibes-v21-latin-regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kalam";
+    src: url("../fonts/google/kalam-v18-latin-regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Amatic SC";
+    src: url("../fonts/google/amatic-sc-v28-latin-regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Indie Flower";
+    src: url("../fonts/google/indie-flower-v24-latin-regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Patrick Hand";
+    src: url("../fonts/google/patrick-hand-v25-latin-regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Rock Salt";
+    src: url("../fonts/google/rock-salt-v24-latin-regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}

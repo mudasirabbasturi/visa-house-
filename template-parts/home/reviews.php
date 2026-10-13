@@ -2,15 +2,20 @@
 /**
  * Homepage — Reviews marquee with pause/play control.
  *
+ * Reviews are intentionally NOT translated — they display in their
+ * original language on every Polylang language version of the site.
+ *
  * @package VisaHouse
  */
 
 $reviews = new WP_Query( array(
-    'post_type'      => 'review',
-    'posts_per_page' => 12,
-    'orderby'        => 'menu_order',
-    'order'          => 'ASC',
-    'no_found_rows'  => true,
+    'post_type'        => 'review',
+    'posts_per_page'   => 12,
+    'orderby'          => 'menu_order',
+    'order'            => 'ASC',
+    'no_found_rows'    => true,
+    'lang'             => '',   // Polylang: query reviews in ALL languages.
+    'suppress_filters' => false,
 ) );
 
 if ( ! $reviews->have_posts() ) {
@@ -104,16 +109,18 @@ $speed        = get_theme_mod( 'vs_reviews_speed', '45' ); // seconds
     </div>
 
     <div class="vs-reviews-track-wrap">
-        <div class="vs-reviews-track"
-             id="vsReviewsTrack"
-             style="animation-duration: <?php echo esc_attr( $speed ); ?>s;">
-            <?php for ( $pass = 0; $pass < 2; $pass++ ) : ?>
-                <?php while ( $reviews->have_posts() ) : $reviews->the_post(); ?>
-                    <?php get_template_part( 'template-parts/card', 'review' ); ?>
-                <?php endwhile; ?>
-                <?php $reviews->rewind_posts(); ?>
-            <?php endfor; ?>
-            <?php wp_reset_postdata(); ?>
+        <div class="vs-reviews-track-ltr">
+            <div class="vs-reviews-track"
+                id="vsReviewsTrack"
+                style="animation-duration: <?php echo esc_attr( $speed ); ?>s;">
+                <?php for ( $pass = 0; $pass < 2; $pass++ ) : ?>
+                    <?php while ( $reviews->have_posts() ) : $reviews->the_post(); ?>
+                        <?php get_template_part( 'template-parts/card', 'review' ); ?>
+                    <?php endwhile; ?>
+                    <?php $reviews->rewind_posts(); ?>
+                <?php endfor; ?>
+                <?php wp_reset_postdata(); ?>
+            </div>
         </div>
-    </div>
+</div>
 </section>
